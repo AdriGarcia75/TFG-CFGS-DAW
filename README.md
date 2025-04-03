@@ -1,6 +1,8 @@
-# Gestor de Tareas Personal
+# Gestor de Tareas 
 
-Este proyecto ofrece una aplicación sencilla y directa para gestionar tareas personales. Permite crear tareas, clasificarlas en categorías, asignarles etiquetas personalizadas y establecer prioridades.  
+Este proyecto ofrece una alternativa sencilla pero potente a aplicaciones de seguimiento de proyecto y gestión de tareas, como lo pueden ser Jira o Trello.
+
+[Insertar nombre] Es aplicación sencilla y directa para gestionar tareas. Permite crear tareas, clasificarlas en categorías, asignarles etiquetas personalizadas y establecer prioridades.  
 Además, se puede añadir comentarios y archivos adjuntos a cada tarea, y llevar un registro completo de todos los cambios realizados. También incluye la opción de configurar tareas recurrentes. 
 El objetivo es ofrecer una herramienta organizada y visualmente atractiva para mantener el control total sobre las tareas diarias.
 
@@ -20,12 +22,12 @@ El objetivo es ofrecer una herramienta organizada y visualmente atractiva para m
 - **Frontend**: React con Tailwind CSS
 - **Backend**: Node.js con Express
 - **Base de Datos**: MySQL (base de datos relacional)
-- **Autenticación**: (Opcional) Puedes agregar autenticación en el futuro si lo deseas.
-- **ORM**: Sequelize (opcional para interactuar con MySQL)
+- **Autenticación**: por decidir si a mano o via libreria (seguramente esta opción)
+- **ORM**: Sequelize (de momento)
 
 ## Esquema de la Base de Datos
 
-El sistema utiliza un modelo de base de datos relacional con las siguientes tablas:
+La aplicación utiliza un modelo de base de datos relacional con las siguientes tablas:
 
 ### Tablas principales:
 TO DO
