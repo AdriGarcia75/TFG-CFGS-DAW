@@ -2,9 +2,9 @@
 
 AnyTasks es una herramienta de gestión de tareas inspirada en el estilo Kanban, pensada para quienes buscan una opción sencilla pero eficaz frente a herramientas más complejas como Jira o Trello.
 
-Con AnyTasks, puedes gestionar tus tareas de manera rápida y eficiente, asignar etiquetas personalizadas y definir prioridades según lo necesites. Además, puedes añadir comentarios y adjuntar archivos, manteniendo un historial detallado de todos los cambios realizados. Si tienes tareas recurrentes, puedes configurarlas fácilmente para que no se te pase ninguna.
+Con AnyTasks, puedes gestionar tus tareas de manera rápida y eficiente, asignar etiquetas personalizadas y definir prioridades según lo necesites. Además, puedes añadir comentarios y adjuntar archivos, manteniendo un historial detallado de todos los cambios realizados.
 
-La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, para que mantengas el control de tus tareas diarias, ya sean personales o en equipo, sin complicaciones innecesarias.
+La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, para que puedas mantener el control de tus tareas, ya sean personales o en equipo, sin complicaciones innecesarias.
 
 ## Características
 
