@@ -23,14 +23,44 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, par
 - **Backend**: Node.js con Express
 - **Base de Datos**: MySQL (base de datos relacional)
 - **Autenticación**: por decidir si a mano o via libreria (seguramente esta opción)
-- **ORM**: Sequelize (de momento)
+- **ORM**: Sequelize
 
-## Esquema de la Base de Datos
-
-La aplicación utiliza un modelo de base de datos relacional con las siguientes tablas:
+## Base de Datos
 
 ### Tablas / modelos:
-TO DO
+
+1. **Users**  
+   Almacena información de los usuarios, como su nombre, correo y contraseña.
+
+2. **Tasks**  
+   Incluye título, descripción, fecha de vencimiento, estado y prioridad. Cada tarea está vinculada a un usuario.
+
+3. **Projects**  
+   Contiene nombre y descripción de los proyectos.
+
+4. **Task_Projects**  
+   Relación muchos a muchos entre tareas y proyectos.
+
+5. **Categories**  
+   Clasificación de tareas mediante categorías con nombre y descripción.
+
+6. **Task_Categories**  
+   Relación muchos a muchos entre tareas y categorías.
+
+7. **Tags**  
+   Etiquetas libres para clasificación flexible de tareas.
+
+8. **Task_Tags**  
+   Relación muchos a muchos entre tareas y etiquetas.
+
+9. **Comments**  
+   Comentarios de los usuarios asociados a tareas.
+
+10. **Attachments**  
+    Archivos adjuntos relacionados a tareas (documentos, imágenes, etc.).
+
+11. **Task_History**  
+    Historial de cambios en tareas: estado, prioridad, etc.
 
 ### Diagrama completo de la Base de Datos:
 ![Descripción de la imagen](assets/images/db-schema.png)
