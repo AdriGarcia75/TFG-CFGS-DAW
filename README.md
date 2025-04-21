@@ -33,7 +33,7 @@ La aplicación utiliza un modelo de base de datos relacional con las siguientes 
 TO DO
 
 ### Diagrama completo de la Base de Datos:
-TO DO
+![Descripción de la imagen](assets/images/db-schema.png)
 
 ## Instalación
 TO DO
