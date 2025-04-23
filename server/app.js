@@ -1,13 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import { existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 const app = express();
 
 const PORT = 3000;
 // this value must be the same used in client's npm start, if not, CORS will block any requests from the frontend
 const FRONTEND_PORT = 8080;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const attachmentsPath = join(__dirname, 'attachments');
 
@@ -17,12 +21,12 @@ if (!existsSync(attachmentsPath)) {
     console.log('La carpeta "attachments/" en "./server/" ha sido creada');
 }
 
-app.listen(port, () => {
+app.listen(PORT, () => {
     console.log(`Servidor Express corriendo en http://localhost:${PORT}`)
 });
 
 app.use(cors({
-    origin: FRONTEND_PORT
+    origin: `http://localhost:${FRONTEND_PORT}`
 }))
 
 app.get('/', (req, res) => {
