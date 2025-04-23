@@ -1,18 +1,18 @@
 const express = require('express');
 const cors = require('cors');
-
-const app = express();
-
 const fs = require('fs');
 const path = require('path');
 
-const attachmentsPath = path.join(__dirname, 'attachments');
+const app = express();
 
 const port = 3000;
 
+const attachmentsPath = path.join(__dirname, 'attachments');
+
+// this checks if it exists an attachments folder (used to save all the files attached to any task)
 if (!fs.existsSync(attachmentsPath)) {
     fs.mkdirSync(attachmentsPath, { recursive: true });
-    console.log('La carpeta "attachments/" en "AnyTasks/server/" ha sido creada');
+    console.log('La carpeta "attachments/" en "./server/" ha sido creada');
 }
 
 app.listen(port, () => {
@@ -30,19 +30,4 @@ app.get('/', (req, res) => {
 
 app.get('/data', (req, res) => {
     res.json({ message: 'Hola desde el backend de Express' })
-});
-
-process.on('SIGINT', () => {
-    console.log('\n¿Estás seguro de que quieres salir? (y/n)');
-
-    process.stdin.setEncoding('utf8');
-    process.stdin.once('data', function (data) {
-        const input = data.trim().toLowerCase();
-        if (input === 's' || input === 'y') {
-            console.log('Cerrando el servidor...');
-            process.exit(0);
-        } else {
-            console.log('Cancelado. El servidor sigue corriendo.');
-        }
-    });
 });
