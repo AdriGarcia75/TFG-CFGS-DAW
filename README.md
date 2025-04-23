@@ -20,10 +20,10 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, par
 ## Tecnologías Utilizadas
 
 - **Frontend**: React con Tailwind CSS
-- **Backend**: Node.js con Express
-- **Base de Datos**: MySQL (base de datos relacional)
-- **Autenticación**: por decidir si a mano o via libreria (seguramente esta opción)
-- **ORM**: Sequelize
+- **Backend**: Express.js
+- **Base de Datos**: MySQL
+- **Autenticación**: WIP - por decidir si a mano o via libreria (seguramente esta opción)
+- **ORM**: Sequelize ORM
 
 ## Base de Datos
 
@@ -66,8 +66,32 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, par
 ![Descripción de la imagen](assets/images/db-schema.png)
 
 ## Instalación
-### Creación de Base de Datos y Migraciones
-> ⚠️ **IMPORTANTE:** Asegúrate de tener el proceso **MySQL Server** ejecutándose antes de continuar.
+###Descarga e instalación del proyecto
+
+**Paso 1 - Clonar el Repositorio** 
+
+Clona el repositorio en tu máquina local:
+```bash
+git clone https://github.com/AdriGarcia75/TFG-CFGS-DAW.git
+cd ./anytasks
+```
+
+**Paso 2 - Descargar dependencias**
+
+Instala las dependencias necesarias para el proyecto en ambas carpetas server y client.
+Para la carpeta de _server_
+```bash
+cd server/
+npm install
+```
+Para la carpeta de _client_
+```bash
+cd ../client/
+npm install
+```
+
+### Paso 2 - Creación de Base de Datos y Migraciones
+> ⚠️ **IMPORTANTE:** Asegúrate de tener MySQL Server instalado y que el proceso de **MySQL Server** esté en ejecución antes de continuar.
 
 > ❗ **Previo:** Abre el proyecto en Visual Studio Code o en otro IDE, navega al archivo _.env_ en _./server/_ y cambía si es necesario las credenciales de tu gestor de BBDD (nombre y contraseña).
 
@@ -84,16 +108,16 @@ Asegurate de configurar la conexión, por ejemplo, creando una conexión nueva e
 3. Abre **Visual Studio Code** y navega a la carpeta `/server`.
 4. Ejecuta el siguiente comando en la terminal:
 
-   ```bash
-   npx sequelize-cli db:migrate
-   ```
+```bash
+npx sequelize-cli db:migrate
+```
 
 ## Método 2: Creación automática de la BBDD desde la terminal
 
 1. Abre **Visual Studio Code** y navega a la carpeta `/server`.
 2. Ejecuta los siguientes comandos en la terminal:
 
-   ```bash
-   npx sequelize-cli db:create
-   npx sequelize-cli db:migrate
-   ```
+```bash
+npx sequelize-cli db:create
+npx sequelize-cli db:migrate
+```
