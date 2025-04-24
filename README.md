@@ -66,9 +66,9 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, par
 ![Descripción de la imagen](assets/images/db-schema.png)
 
 ## Instalación
-###Descarga e instalación del proyecto
+### Paso 1 -Descarga e instalación del proyecto
 
-**Paso 1 - Clonar el Repositorio** 
+**Paso 1.1 - Clonar el Repositorio** 
 
 Clona el repositorio en tu máquina local:
 ```bash
@@ -76,7 +76,7 @@ git clone https://github.com/AdriGarcia75/TFG-CFGS-DAW.git
 cd ./anytasks
 ```
 
-**Paso 2 - Descargar dependencias**
+**Paso 1.2 - Descargar e instalar dependencias**
 
 Instala las dependencias necesarias para el proyecto en ambas carpetas server y client.
 Para la carpeta de _server_
@@ -89,19 +89,24 @@ Para la carpeta de _client_
 cd ../client/
 npm install
 ```
-
 ### Paso 2 - Creación de Base de Datos y Migraciones
 > ⚠️ **IMPORTANTE:** Asegúrate de tener MySQL Server instalado y que el proceso de **MySQL Server** esté en ejecución antes de continuar.
 
-> ❗ **Previo:** Abre el proyecto en Visual Studio Code o en otro IDE, navega al archivo _.env_ en _./server/_ y cambía si es necesario las credenciales de tu gestor de BBDD (nombre y contraseña).
-
-### Paso previo
-Asegurate de configurar la conexión, por ejemplo, creando una conexión nueva en el gestor de bases de datos
+### Paso 2.1 - Creación del conector de la BBDD
+Ahora crearemos un conector de la BBDD, así podemos consultarla desde nuestro gestor (recomiendo utlizar DBeaver).
 ![Ejemplo de creación de conector de BBDD](assets/images/connector1.png)
 
-> Si da error, seguramente es por el parámetro de "Database". Este da por hecho de que **ya existe** una BBDD del mismo nombre, dejar vacío si se quiere crear manualmente (Método 1)
+> Si da error, seguramente sea por el parámetro de "Database". Este da por hecho de que **ya existe** una BBDD del mismo nombre, dejar vacío si decides crearla en el siguiente paso (Método 2)
 
-## Método 1: Creación manual de la base de datos
+### Paso 2.2 - Editar el conector de la BBDD
+Esta opción se habilita debido a que a partir de la versión 8 o superior de MySQL se usa un método de autenticación que requiere la recuperación de la clave pública para establecer la conexión correctamente.  
+![Edición del conector, habilitando las claves públicas](assets/images/allowPublicKeyRetrieval.png)
+
+### Paso 2.3 - Migraciones (y creacíón de la BBDD desde terminal) 
+
+> ❗ **Nota:** Abre el proyecto en Visual Studio Code o en otro IDE, navega al archivo _.env_ en _./server/_ y cambía si es necesario las credenciales de tu gestor de BBDD (nombre y contraseña).
+
+#### Método 1: Creación manual de la base de datos
 
 1. Abre **DBeaver** u otro gestor de bases de datos MySQL.
 2. Crea una base de datos llamada `anytasks` o el nombre que hayas configurado en el _.env_ de _./server/_.
@@ -112,7 +117,7 @@ Asegurate de configurar la conexión, por ejemplo, creando una conexión nueva e
 npx sequelize-cli db:migrate
 ```
 
-## Método 2: Creación automática de la BBDD desde la terminal
+#### Método 2: Creación automática de la BBDD desde la terminal
 
 1. Abre **Visual Studio Code** y navega a la carpeta `/server`.
 2. Ejecuta los siguientes comandos en la terminal:
