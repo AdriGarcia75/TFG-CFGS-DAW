@@ -1,17 +1,16 @@
-import express from 'express';
-import cors from 'cors';
-import { existsSync, mkdirSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+const express = require('express');
+const cors = require('cors');
+const { existsSync, mkdirSync } = require('fs');
+const { fileURLToPath } = require('url');
+const { dirname, join } = require('path');
+const { User, sequelize } = require('./models/index.js');
+const authRoutes = require('./routes/auth.js');
 
 const app = express();
 
 const PORT = 3000;
-// this value must be the same used in client's npm start, if not, CORS will block any requests from the frontend
+// warning, this MUST be the same port used in client's npm start, but I advise to not use any port other than 8080
 const FRONTEND_PORT = 8080;
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const attachmentsPath = join(__dirname, 'attachments');
 
@@ -21,18 +20,33 @@ if (!existsSync(attachmentsPath)) {
     console.log('La carpeta "attachments/" en "./server/" ha sido creada');
 }
 
-app.listen(PORT, () => {
-    console.log(`Servidor Express corriendo en http://localhost:${PORT}`)
-});
+// middlewares
+app.use(cors({ origin: `http://localhost:${FRONTEND_PORT}` }));
+app.use(express.json());
+app.use(express.static(join(__dirname, 'landing')));
 
-app.use(cors({
-    origin: `http://localhost:${FRONTEND_PORT}`
-}))
+// routes
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
-    res.send('Hola desde el backend de Express')
+    res.sendFile(join(__dirname, 'landing', 'index.html'));
 });
 
-app.get('/data', (req, res) => {
-    res.json({ message: 'Hola desde el backend de Express' })
+app.get('/test', (req, res) => {
+    res.json({ message: 'test' });
 });
+
+// start only after establishing connection with DB
+sequelize.authenticate()
+    .then(() => {
+        console.log("Conexión a la base de datos exitosa")
+
+        app.listen(PORT, () => {
+            console.log(`Accede a la landing page de la página desde http://localhost:${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error('Error al conectar a la base de datos:', err);
+        // terminate the node process
+        process.exit(1);
+    });
