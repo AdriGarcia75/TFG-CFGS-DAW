@@ -2,7 +2,7 @@
  * about MySQL configuration:
  *
  * the .env file (the one i'll be using in development) is located on server's root and is meant to be local
- * you can create one yourself or hardcode the needed values here, if not, migrations might fail
+ * you can create one yourself or hardcode the needed values here, if not, connection might fail
 */
 require('dotenv').config();
 
