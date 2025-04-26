@@ -22,45 +22,24 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, par
 - **Frontend**: React con Tailwind CSS
 - **Backend**: Express.js
 - **Base de Datos**: MySQL
-- **Autenticación**: WIP - por decidir si a mano o via libreria (seguramente esta opción)
 - **ORM**: Sequelize ORM
 
 ## Base de Datos
 
 ### Tablas / modelos:
 
-1. **Users**
-   Almacena información de los usuarios, como su nombre, correo y contraseña.
+- **Users**: Información de usuarios como nombre, correo y contraseña.
+- **Tasks**: Tareas con título, descripción, vencimiento, estado, prioridad y usuario asociado.
+- **Projects**: Proyectos con nombre y descripción.
+- ***Task_Projects**: Relación muchos a muchos entre tareas y proyectos.
+- **Categories**: Categorías de tareas con nombre y descripción.
+- ***Task_Categories**: Relación muchos a muchos entre tareas y categorías.
+- **Tags**: Etiquetas libres para clasificar tareas de forma flexible.
+- ***Task_Tags**: Relación muchos a muchos entre tareas y etiquetas.
+- **Comments**: Comentarios de usuarios asociados a tareas.
+- **Attachments**: Archivos adjuntos relacionados a tareas.
+- **Task_History**: Historial de cambios de estado, prioridad y más en tareas.
 
-2. **Tasks**
-   Incluye título, descripción, fecha de vencimiento, estado y prioridad. Cada tarea está vinculada a un usuario.
-
-3. **Projects**
-   Contiene nombre y descripción de los proyectos.
-
-4. **Task_Projects**
-   Relación muchos a muchos entre tareas y proyectos.
-
-5. **Categories**
-   Clasificación de tareas mediante categorías con nombre y descripción.
-
-6. **Task_Categories**
-   Relación muchos a muchos entre tareas y categorías.
-
-7. **Tags**
-   Etiquetas libres para clasificación flexible de tareas.
-
-8. **Task_Tags**
-   Relación muchos a muchos entre tareas y etiquetas.
-
-9. **Comments**
-   Comentarios de los usuarios asociados a tareas.
-
-10. **Attachments**
-    Archivos adjuntos relacionados a tareas (documentos, imágenes, etc.).
-
-11. **Task_History**
-    Historial de cambios en tareas: estado, prioridad, etc.
 
 ### Diagrama completo de la Base de Datos:
 ![Descripción de la imagen](assets/images/db-schema.png)
@@ -71,6 +50,7 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, par
 **Paso 1.1 - Clonar el Repositorio** 
 
 Clona el repositorio en tu máquina local:
+
 ```bash
 git clone https://github.com/AdriGarcia75/TFG-CFGS-DAW.git
 cd ./anytasks
@@ -80,17 +60,21 @@ cd ./anytasks
 
 Instala las dependencias necesarias para el proyecto en ambas carpetas server y client.
 Para la carpeta de _server_
+
 ```bash
 cd server/
 npm install
 ```
+
 Para la carpeta de _client_
+
 ```bash
 cd ../client/
 npm install
 ```
+
 ### Paso 2 - Creación de Base de Datos y Migraciones
-> ⚠️ **IMPORTANTE:** Asegúrate de tener MySQL Server instalado y que el proceso de **MySQL Server** esté en ejecución antes de continuar.
+⚠️ **IMPORTANTE:** Asegúrate de tener MySQL Server instalado y que el proceso de **MySQL Server** esté en ejecución antes de continuar.
 
 ### Paso 2.1 - Creación del conector de la BBDD
 Ahora crearemos un conector de la BBDD, así podemos consultarla desde nuestro gestor (recomiendo utlizar DBeaver).
