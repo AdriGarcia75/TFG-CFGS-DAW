@@ -31,20 +31,21 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, par
 - **Users**: Información de usuarios como nombre, correo y contraseña.
 - **Tasks**: Tareas con título, descripción, vencimiento, estado, prioridad y usuario asociado.
 - **Projects**: Proyectos con nombre y descripción.
-- ***Task_Projects**: Relación muchos a muchos entre tareas y proyectos.
+- **\*Task_Projects**: Relación muchos a muchos entre tareas y proyectos.
 - **Categories**: Categorías de tareas con nombre y descripción.
-- ***Task_Categories**: Relación muchos a muchos entre tareas y categorías.
+- **\*Task_Categories**: Relación muchos a muchos entre tareas y categorías.
 - **Tags**: Etiquetas libres para clasificar tareas de forma flexible.
-- ***Task_Tags**: Relación muchos a muchos entre tareas y etiquetas.
+- **\*Task_Tags**: Relación muchos a muchos entre tareas y etiquetas.
 - **Comments**: Comentarios de usuarios asociados a tareas.
 - **Attachments**: Archivos adjuntos relacionados a tareas.
 - **Task_History**: Historial de cambios de estado, prioridad y más en tareas.
 
-
 ### Diagrama completo de la Base de Datos:
+
 ![Descripción de la imagen](assets/images/db-schema.png)
 
 ## Instalación
+
 ### Paso 1 -Descarga e instalación del proyecto
 
 **Paso 1.1 - Clonar el Repositorio**
@@ -74,15 +75,18 @@ npm install
 ```
 
 ### Paso 2 - Creación de Base de Datos y Migraciones
+
 ⚠️ **IMPORTANTE:** Asegúrate de tener MySQL Server instalado y que el proceso de **MySQL Server** esté en ejecución antes de continuar.
 
 ### Paso 2.1 - Creación del conector de la BBDD
+
 Ahora crearemos un conector de la BBDD, así podemos consultarla desde nuestro gestor (recomiendo utlizar DBeaver).
 ![Ejemplo de creación de conector de BBDD](assets/images/connector1.png)
 
 > Si da error, seguramente sea por el parámetro de "Database". Este da por hecho de que **ya existe** una BBDD del mismo nombre, dejar vacío si decides crearla en el siguiente paso (Método 2)
 
 ### Paso 2.2 - Editar el conector de la BBDD
+
 Esta opción se habilita debido a que a partir de la versión 8 o superior de MySQL se usa un método de autenticación que requiere la recuperación de la clave pública para establecer la conexión correctamente.
 ![Edición del conector, habilitando las claves públicas](assets/images/allowPublicKeyRetrieval.png)
 
@@ -110,7 +114,3 @@ npx sequelize-cli db:migrate
 npx sequelize-cli db:create
 npx sequelize-cli db:migrate
 ```
-
-todo
-añadir información sobre .env de /server (en concreto sobre la secret key para generar auth tokens)
-https://www.browserling.com/tools/random-hex

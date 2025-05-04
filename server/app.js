@@ -15,8 +15,8 @@ const attachmentsPath = join(__dirname, 'attachments');
 
 // this checks if it exists an attachments folder (used to save all the files attached to any task)
 if (!existsSync(attachmentsPath)) {
-    mkdirSync(attachmentsPath, { recursive: true });
-    console.log('La carpeta "attachments/" en "./server/" ha sido creada');
+	mkdirSync(attachmentsPath, { recursive: true });
+	console.log('La carpeta "attachments/" en "./server/" ha sido creada');
 }
 
 // middlewares
@@ -28,24 +28,27 @@ app.use(express.static(join(__dirname, 'landing')));
 app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
-    res.sendFile(join(__dirname, 'landing', 'index.html'));
+	res.sendFile(join(__dirname, 'landing', 'index.html'));
 });
 
 app.get('/test', (req, res) => {
-    res.json({ message: 'test' });
+	res.json({ message: 'test' });
 });
 
 // start only after establishing connection with DB
-sequelize.authenticate()
-    .then(() => {
-        console.log("Conexión a la base de datos exitosa")
+sequelize
+	.authenticate()
+	.then(() => {
+		console.log('Conexión a la base de datos exitosa');
 
-        app.listen(PORT, () => {
-            console.log(`Accede a la landing page de la página desde http://localhost:${PORT}`);
-        });
-    })
-    .catch((err) => {
-        console.error('Error al conectar a la base de datos:', err);
-        // terminate the node process
-        process.exit(1);
-    });
+		app.listen(PORT, () => {
+			console.log(
+				`Accede a la landing page de la página desde http://localhost:${PORT}`,
+			);
+		});
+	})
+	.catch((err) => {
+		console.error('Error al conectar a la base de datos:', err);
+		// terminate the node process
+		process.exit(1);
+	});
