@@ -22,7 +22,11 @@ const Login = () => {
 			const data = await res.json();
 
 			if (res.ok) {
-				alert('Inicio de sesión exitoso');
+				// save user login token on localStorage
+				localStorage.setItem('token', data.token);
+
+				alert('Inicio de sesión completado!');
+				// navigate('/dashboard');
 			} else {
 				alert(data.error || 'Error al iniciar sesión');
 			}

@@ -27,6 +27,7 @@ const Register = () => {
 
 			if (res.ok) {
 				alert('Registro exitoso');
+				// redirect to login (for user's QoL)
 				navigate('/login');
 			} else {
 				alert(data.error || 'Error al registrarse');

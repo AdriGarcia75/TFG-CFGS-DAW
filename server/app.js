@@ -3,7 +3,8 @@ const cors = require('cors');
 const { existsSync, mkdirSync } = require('fs');
 const { join } = require('path');
 const { sequelize } = require('./models/index.js');
-const authRoutes = require('./routes/auth.js');
+const authMiddleware = require('./middlewares/auth.js');
+const authRoutes = require('./routes/authRoutes.js');
 
 const app = express();
 
@@ -27,6 +28,13 @@ app.use(express.static(join(__dirname, 'landing')));
 // routes
 app.use('/api/auth', authRoutes);
 
+app.use('/api', (req, res, next) => {
+    // exclude '/api/auth' routes as these are the log-in and register routes
+    if (req.originalUrl.startsWith('/api/auth')) return next();
+
+    return authMiddleware(req, res, next);
+});
+
 app.get('/', (req, res) => {
 	res.sendFile(join(__dirname, 'landing', 'index.html'));
 });
@@ -35,20 +43,19 @@ app.get('/test', (req, res) => {
 	res.json({ message: 'test' });
 });
 
-// start only after establishing connection with DB
-sequelize
-	.authenticate()
-	.then(() => {
-		console.log('Conexión a la base de datos exitosa');
+app.get('/api/test', (req, res) => {
+	res.json({ message: 'protected test' });
+});
 
-		app.listen(PORT, () => {
-			console.log(
-				`Accede a la landing page de la página desde http://localhost:${PORT}`,
-			);
-		});
-	})
-	.catch((err) => {
-		console.error('Error al conectar a la base de datos:', err);
-		// terminate the node process
-		process.exit(1);
-	});
+// start only after establishing connection with DB
+sequelize.authenticate()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Accede a la landing page de la página desde http://localhost:${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error('Error al conectar a la base de datos:', err);
+        // terminate the node process
+        process.exit(1);
+    });
