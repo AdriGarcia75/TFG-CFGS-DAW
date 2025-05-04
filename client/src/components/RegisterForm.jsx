@@ -1,4 +1,12 @@
-function RegisterForm({ email, username, password, handleEmailChange, handleUsernameChange, handlePasswordChange, handleSubmit }) {
+function RegisterForm({
+    email,
+    username,
+    password,
+    handleEmailChange,
+    handleUsernameChange,
+    handlePasswordChange,
+    handleSubmit
+}) {
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 w-full">
             <div className="w-full max-w-lg p-8 bg-white shadow-lg rounded-lg">

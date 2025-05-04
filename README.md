@@ -47,7 +47,7 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, par
 ## Instalación
 ### Paso 1 -Descarga e instalación del proyecto
 
-**Paso 1.1 - Clonar el Repositorio** 
+**Paso 1.1 - Clonar el Repositorio**
 
 Clona el repositorio en tu máquina local:
 
@@ -83,10 +83,10 @@ Ahora crearemos un conector de la BBDD, así podemos consultarla desde nuestro g
 > Si da error, seguramente sea por el parámetro de "Database". Este da por hecho de que **ya existe** una BBDD del mismo nombre, dejar vacío si decides crearla en el siguiente paso (Método 2)
 
 ### Paso 2.2 - Editar el conector de la BBDD
-Esta opción se habilita debido a que a partir de la versión 8 o superior de MySQL se usa un método de autenticación que requiere la recuperación de la clave pública para establecer la conexión correctamente.  
+Esta opción se habilita debido a que a partir de la versión 8 o superior de MySQL se usa un método de autenticación que requiere la recuperación de la clave pública para establecer la conexión correctamente.
 ![Edición del conector, habilitando las claves públicas](assets/images/allowPublicKeyRetrieval.png)
 
-### Paso 2.3 - Migraciones (y creacíón de la BBDD desde terminal) 
+### Paso 2.3 - Migraciones (y creacíón de la BBDD desde terminal)
 
 > ❗ **Nota:** Abre el proyecto en Visual Studio Code o en otro IDE, navega al archivo _.env_ en _./server/_ y cambía si es necesario las credenciales de tu gestor de BBDD (nombre y contraseña).
 
@@ -110,3 +110,7 @@ npx sequelize-cli db:migrate
 npx sequelize-cli db:create
 npx sequelize-cli db:migrate
 ```
+
+todo
+añadir información sobre .env de /server (en concreto sobre la secret key para generar auth tokens)
+https://www.browserling.com/tools/random-hex

@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const { existsSync, mkdirSync } = require('fs');
-const { fileURLToPath } = require('url');
-const { dirname, join } = require('path');
-const { User, sequelize } = require('./models/index.js');
+const { join } = require('path');
+const { sequelize } = require('./models/index.js');
 const authRoutes = require('./routes/auth.js');
 
 const app = express();

@@ -1,56 +1,48 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import RegisterForm from '../components/RegisterForm';
+import LoginForm from '../components/LoginForm';
 import BackToLandingPage from '../components/BackToLandingPage';
 
-const Register = () => {
+const Login = () => {
     const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            // fetch the register data to the API to validate and then save the register
-            const res = await fetch('http://localhost:3000/api/auth/register', {
+            // fetch the login data to the API to validate and then save the register
+            const res = await fetch('http://localhost:3000/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ name: username, email, password })
+                body: JSON.stringify({ email, password })
             });
 
             const data = await res.json();
 
             if (res.ok) {
-                alert('Registro exitoso');
-                navigate('/login');
+                alert('Inicio de sesión exitoso');
             } else {
-                alert(data.error || 'Error al registrarse');
+                alert(data.error || 'Error al iniciar sesión');
             }
         } catch (err) {
             console.error(err);
-            alert('Ha ocurrido un error a la hora de registrarse');
+            alert('Ha ocurrido un error al iniciar sesión');
         }
     };
 
     const handleEmailChange = (e) => setEmail(e.target.value);
-    const handleUsernameChange = (e) => setUsername(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <BackToLandingPage/>
+            <BackToLandingPage />
 
-            <RegisterForm
+            <LoginForm
                 email={email}
-                username={username}
                 password={password}
                 handleEmailChange={handleEmailChange}
-                handleUsernameChange={handleUsernameChange}
                 handlePasswordChange={handlePasswordChange}
                 handleSubmit={handleSubmit}
             />
@@ -58,4 +50,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Login;
