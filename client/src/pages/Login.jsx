@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import LoginForm from '../components/LoginForm';
 import BackToLandingPage from '../components/BackToLandingPage';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -26,7 +28,7 @@ const Login = () => {
 				localStorage.setItem('token', data.token);
 
 				alert('Inicio de sesión completado!');
-				// navigate('/dashboard');
+				navigate('/dashboard');
 			} else {
 				alert(data.error || 'Error al iniciar sesión');
 			}

@@ -8,7 +8,7 @@ import {
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
-// import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard';
 
 function App() {
 	return (
@@ -20,7 +20,7 @@ function App() {
 
 				{/* protected routes (via webtoken) */}
 				<Route element={<ProtectedRoute />}>
-					{/* <Route path="/dashboard" element={<Dashboard />} /> */}
+					<Route path="/dashboard" element={<Dashboard />} />
 				</Route>
 
 				{/* redirect */}
