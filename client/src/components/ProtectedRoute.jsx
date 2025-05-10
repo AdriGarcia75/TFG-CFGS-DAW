@@ -13,7 +13,8 @@ const ProtectedRoute = () => {
 		const nowTime = Date.now() / 1000;
 
 		if (decodedToken?.exp < nowTime) {
-			localStorage.removeItem('token', 'token_created_at');
+			localStorage.removeItem('token');
+			localStorage.removeItem('token_created_at');
 			return <Navigate to="/login" />;
 		}
 
