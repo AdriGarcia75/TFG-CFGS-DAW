@@ -17,6 +17,15 @@ module.exports = {
 				type: Sequelize.TEXT,
 				allowNull: true,
 			},
+			userId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: {
+					model: 'Users',
+					key: 'id',
+				},
+				onDelete: 'CASCADE',
+			},
 			createdAt: {
 				type: Sequelize.DATE,
 				defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
