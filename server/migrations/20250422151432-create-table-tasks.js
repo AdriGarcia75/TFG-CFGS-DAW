@@ -43,6 +43,26 @@ module.exports = {
 				type: Sequelize.ENUM('daily', 'weekly', 'monthly', 'none'),
 				defaultValue: 'none',
 			},
+			boardId: {
+				type: Sequelize.INTEGER,
+				allowNull: true,
+				references: {
+					model: 'Boards',
+					key: 'id',
+				},
+				onDelete: 'CASCADE',
+				onUpdate: 'CASCADE',
+			},
+			columnId: {
+				type: Sequelize.INTEGER,
+				allowNull: true,
+				references: {
+					model: 'Columns',
+					key: 'id',
+				},
+				onDelete: 'SET NULL',
+				onUpdate: 'CASCADE',
+			},
 			createdAt: {
 				type: Sequelize.DATE,
 				defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
@@ -50,7 +70,6 @@ module.exports = {
 			updatedAt: {
 				type: Sequelize.DATE,
 				defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-				onUpdate: Sequelize.literal('CURRENT_TIMESTAMP'),
 			},
 		});
 	},
