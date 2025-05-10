@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import LoginForm from '../components/LoginForm';
 import BackToLandingPage from '../components/BackToLandingPage';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
@@ -12,10 +13,16 @@ const Login = () => {
 	useEffect(() => {
 		const token = localStorage.getItem('token');
 		if (token) {
-		  navigate('/dashboard');
-		  alert("¡Debes cerrar tu sesión activa antes de volver a iniciar sesión!")
+			const decoded = jwtDecode(token);
+			if (decoded.exp < Date.now() / 1000) {
+				localStorage.removeItem('token');
+				alert('Tu sesión ha expirado, se te redirigirá al login.');
+			} else {
+				navigate('/dashboard');
+				alert('¡Debes cerrar tu sesión activa antes de volver a iniciar sesión!');
+			}
 		}
-	  }, [navigate]);
+	}, [navigate]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();

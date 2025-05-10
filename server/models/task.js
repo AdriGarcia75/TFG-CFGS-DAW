@@ -1,5 +1,7 @@
 'use strict';
 
+const { Sequelize } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   const Task = sequelize.define('Task', {
     id: {
@@ -34,11 +36,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.literal('CURRENT_TIMESTAMP'),
+      defaultValue: Sequelize.NOW,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: DataTypes.literal('CURRENT_TIMESTAMP'),
+      defaultValue: Sequelize.NOW,
     },
   });
 

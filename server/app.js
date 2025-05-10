@@ -5,6 +5,8 @@ const { join } = require('path');
 const { sequelize } = require('./models/index.js');
 const authMiddleware = require('./middlewares/auth.js');
 const authRoutes = require('./routes/authRoutes.js');
+const columnsRoutes = require('./routes/columns.js');
+const boardsRoutes = require('./routes/boards.js');
 
 const app = express();
 
@@ -25,26 +27,23 @@ app.use(cors({ origin: `http://localhost:${FRONTEND_PORT}` }));
 app.use(express.json());
 app.use(express.static(join(__dirname, 'landing')));
 
-// routes
-app.use('/api/auth', authRoutes);
-
-app.use('/api', (req, res, next) => {
-    // exclude '/api/auth' routes as these are the login and register routes and need to be accesed prior to having a token
-    if (req.originalUrl.startsWith('/api/auth')) return next();
-
-    //middleware to check if token is valid and not expired
-    return authMiddleware(req, res, next);
-});
-
+// unprotected routes
 app.get('/', (req, res) => {
 	res.sendFile(join(__dirname, 'landing', 'index.html'));
 });
+
+app.use('/api/auth', authRoutes);
 
 app.get('/test', (req, res) => {
 	res.json({ message: 'test' });
 });
 
-app.get('/api/test', (req, res) => {
+// protected routes
+app.use('/api/columns', authMiddleware, columnsRoutes);
+
+app.use('/api/boards', authMiddleware, boardsRoutes);
+
+app.get('/api/test', authMiddleware, (req, res) => {
 	res.json({ message: 'protected test' });
 });
 

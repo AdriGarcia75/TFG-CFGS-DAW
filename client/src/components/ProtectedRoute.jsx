@@ -10,9 +10,8 @@ const ProtectedRoute = () => {
 
 	try {
 		const decodedToken = jwtDecode(token);
-		const nowTime = Date.now() / 1000;
 
-		if (decodedToken?.exp < nowTime) {
+		if (decodedToken?.exp < Date.now() / 1000) {
 			localStorage.removeItem('token');
 			localStorage.removeItem('token_created_at');
 			return <Navigate to="/login" />;
