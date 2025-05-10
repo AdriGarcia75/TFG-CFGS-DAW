@@ -18,12 +18,12 @@ function App() {
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 
-				{/* protected routes (via webtoken) */}
+				{/* protected routes (via jsonwebtoken) */}
 				<Route element={<ProtectedRoute />}>
 					<Route path="/dashboard" element={<Dashboard />} />
 				</Route>
 
-				{/* redirect */}
+				{/* redirects */}
 				<Route path="/" element={<Navigate to="/login" />} />
 				<Route path="*" element={<Navigate to="/login" />} />
 			</Routes>
