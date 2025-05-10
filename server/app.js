@@ -32,6 +32,7 @@ app.use('/api', (req, res, next) => {
     // exclude '/api/auth' routes as these are the login and register routes and need to be accesed prior to having a token
     if (req.originalUrl.startsWith('/api/auth')) return next();
 
+    //middleware to check if token is valid and not expired
     return authMiddleware(req, res, next);
 });
 
