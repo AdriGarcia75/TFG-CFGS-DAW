@@ -26,7 +26,7 @@ if (dbConfig.use_env_variable) {
 	);
 }
 
-// reads ./models/ to import all models and add them to "db"
+// reads automatically ./models/ to import all the models and add them to "db"
 for (const file of readdirSync(__dirname)) {
 	if (
 		file.indexOf('.') !== 0 &&
