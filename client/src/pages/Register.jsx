@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../components/RegisterForm';
 import BackToLandingPage from '../components/BackToLandingPage';
@@ -9,6 +9,15 @@ const Register = () => {
 	const [password, setPassword] = useState('');
 
 	const navigate = useNavigate();
+
+	// check if a token already exists for the current user
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (token) {
+			alert('¡Ya has iniciado sesión! Cierra sesión antes de registrarte con otra cuenta.');
+			navigate('/dashboard');
+		}
+	}, [navigate]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -27,7 +36,6 @@ const Register = () => {
 
 			if (res.ok) {
 				alert('Registro exitoso');
-				// redirect to login (for user's QoL)
 				navigate('/login');
 			} else {
 				alert(data.error || 'Error al registrarse');

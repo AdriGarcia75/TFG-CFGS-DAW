@@ -29,7 +29,7 @@ app.use(express.static(join(__dirname, 'landing')));
 app.use('/api/auth', authRoutes);
 
 app.use('/api', (req, res, next) => {
-    // exclude '/api/auth' routes as these are the log-in and register routes
+    // exclude '/api/auth' routes as these are the login and register routes and need to be accesed prior to having a token
     if (req.originalUrl.startsWith('/api/auth')) return next();
 
     return authMiddleware(req, res, next);

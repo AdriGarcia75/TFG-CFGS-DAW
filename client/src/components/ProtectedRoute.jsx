@@ -6,7 +6,7 @@ const ProtectedRoute = () => {
   if (!token) {
     return <Navigate to="/login" />;
   } else {
-    //used to allow child routes to be accessed   
+    // used to allow child routes to be accessed   
     return <Outlet />;
   }
 };

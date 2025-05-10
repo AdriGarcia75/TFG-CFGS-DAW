@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LoginForm from '../components/LoginForm';
 import BackToLandingPage from '../components/BackToLandingPage';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,15 @@ const Login = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const navigate = useNavigate();
+
+	// check if a token already exists for the current user
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		if (token) {
+		  navigate('/dashboard');
+		  alert("¡Debes cerrar tu sesión activa antes de volver a iniciar sesión!")
+		}
+	  }, [navigate]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -26,6 +35,7 @@ const Login = () => {
 			if (res.ok) {
 				// save user login token on localStorage
 				localStorage.setItem('token', data.token);
+				localStorage.setItem('token_created_at', new Date().toString());
 
 				alert('Inicio de sesión completado!');
 				navigate('/dashboard');
