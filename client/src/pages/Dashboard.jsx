@@ -46,7 +46,6 @@ export default function Dashboard() {
       }
       const data = await response.json();
       setBoards(data);
-      // this will always select the first board found
       setSelectedBoard(data[0]?.id || null);
       setLoading(false); 
     } catch (error) {
@@ -65,7 +64,7 @@ export default function Dashboard() {
     }
   }, [selectedBoard]);
 
-  const handleColumnCreate = async (e) => {
+  const handleColumnCreate = async (newColumnName) => {
     if (newColumnName.trim() && selectedBoard) {
       try {
         const token = localStorage.getItem('token');
@@ -80,12 +79,13 @@ export default function Dashboard() {
             boardId: selectedBoard,
           }),
         });
+        
         if (!response.ok) {
           throw new Error('Error al crear la columna');
         }
+
         const newColumn = await response.json();
-        setColumns([...columns, newColumn]);
-        setNewColumnName('');
+        setColumns(prevColumns => [...prevColumns, newColumn]);
       } catch (error) {
         console.error('Error al crear la columna:', error);
       }
@@ -133,19 +133,13 @@ export default function Dashboard() {
     <DashboardView
       columns={columns}
       boards={boards}
-      onCreateColumn={handleColumnCreate}
       selectedBoard={selectedBoard}
       onBoardChange={handleBoardChange}
-      newColumnName={newColumnName}
-      setNewColumnName={setNewColumnName}
     >
       <div className="flex space-x-4 mt-6">
         <CreateBoardButton onCreateBoard={handleBoardCreate} />
         <CreateColumnButton
           onCreateColumn={handleColumnCreate}
-          newColumnName={newColumnName}
-          setNewColumnName={setNewColumnName}
-          boards={boards}
         />
       </div>
     </DashboardView>

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-export default function CreateBoardButton({ onCreateBoard }) {
-  const [newBoardName, setNewBoardName] = useState('');
+export default function CreateColumnButton({ onCreateColumn }) {
+  const [newColumnName, setNewColumnName] = useState('');
 
-  const handleCreateBoard = () => {
-    if (newBoardName.trim()) {
-      onCreateBoard(newBoardName);
-      setNewBoardName('');
+  const handleCreateColumn = () => {
+    if (newColumnName.trim()) {
+      onCreateColumn(newColumnName);
+      setNewColumnName('');
     }
   };
 
@@ -17,14 +17,14 @@ export default function CreateBoardButton({ onCreateBoard }) {
           type="text"
           className="p-2 border rounded w-full"
           placeholder="Nombre columna"
-          value={newBoardName}
-          onChange={(e) => setNewBoardName(e.target.value)}
+          value={newColumnName}
+          onChange={(e) => setNewColumnName(e.target.value)}
         />
       </div>
       <div className="mt-2 w-full max-w-xs">
         <button
           className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
-          onClick={handleCreateBoard}
+          onClick={handleCreateColumn}
         >
           Crear columna
         </button>
