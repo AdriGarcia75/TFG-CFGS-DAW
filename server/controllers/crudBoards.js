@@ -3,14 +3,20 @@ const { Board } = require('../models');
 const createBoard = async (req, res) => {
   try {
     const { name, description } = req.body;
+    const userId = req.user.id;
 
     if (!name) {
       return res.status(400).json({ error: 'Se necesita un nombre para el tablero.' });
     }
 
+    if (!userId) {
+      return res.status(401).json({ error: 'Usuario no autenticado' });
+    }
+
     const newBoard = await Board.create({
       name,
-      description,
+      description: description || "Descripción vacía",
+      userId,
     });
 
     return res.status(201).json(newBoard);

@@ -40,5 +40,7 @@ for (const file of readdirSync(__dirname)) {
 	}
 }
 
-const User = db.User;
-module.exports = { User, sequelize, Sequelize };
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+module.exports = db;

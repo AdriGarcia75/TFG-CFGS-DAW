@@ -16,7 +16,7 @@ export default function Dashboard() {
     if (!boardId) return;
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${apiUrl}columns?boardId=${boardId}`, {
+      const response = await fetch(`${apiUrl}/columns?boardId=${boardId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -46,26 +46,26 @@ export default function Dashboard() {
       }
       const data = await response.json();
       setBoards(data);
+      // this will always select the first board found
       setSelectedBoard(data[0]?.id || null);
-      setLoading(false);
+      setLoading(false); 
     } catch (error) {
       console.error('Error al cargar los tableros:', error);
-      setLoading(false);
+      setLoading(false); 
     }
   };
 
   useEffect(() => {
-    fetchBoards();
-  }, []);
+    fetchBoards(); 
+  }, []); 
 
   useEffect(() => {
     if (selectedBoard) {
-      fetchColumns(selectedBoard);
+      fetchColumns(selectedBoard); 
     }
   }, [selectedBoard]);
 
   const handleColumnCreate = async (e) => {
-    e.preventDefault();
     if (newColumnName.trim() && selectedBoard) {
       try {
         const token = localStorage.getItem('token');
@@ -111,7 +111,6 @@ export default function Dashboard() {
 
         const newBoard = await response.json();
         setBoards((prevBoards) => [...prevBoards, newBoard]);
-        fetchBoards();
       } catch (error) {
         console.error('Error al crear el tablero:', error);
       }

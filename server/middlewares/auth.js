@@ -8,7 +8,7 @@ function auth(req, res, next) {
 	if (!token) return res.status(401).json({ message: "No se ha encontrado el token de autenticación"});
 
 	jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
-		if (err) return res.status(403).json({ message: "Token inválido"});
+		if (err) return res.status(403).json({ message: "Token inválido" });
 		req.user = user;
 		next();
 	});
