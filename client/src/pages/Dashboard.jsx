@@ -12,6 +12,28 @@ export default function Dashboard() {
 
   const apiUrl = "http://localhost:3000/api";
 
+  const fetchBoards = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${apiUrl}/boards`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Error al obtener los tableros');
+      }
+      const data = await response.json();
+      setBoards(data);
+      setSelectedBoard(data[0]?.id || null);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error al cargar los tableros:', error);
+      setLoading(false);
+    }
+  };
+
   const fetchColumns = async (boardId) => {
     if (!boardId) return;
     try {
@@ -32,65 +54,16 @@ export default function Dashboard() {
     }
   };
 
-  const fetchBoards = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${apiUrl}/boards`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Error al obtener los tableros');
-      }
-      const data = await response.json();
-      setBoards(data);
-      setSelectedBoard(data[0]?.id || null);
-      setLoading(false); 
-    } catch (error) {
-      console.error('Error al cargar los tableros:', error);
-      setLoading(false); 
-    }
-  };
-
+  // this calls fetchBoards on web load
   useEffect(() => {
-    fetchBoards(); 
-  }, []); 
+    fetchBoards();
+  }, []);
 
   useEffect(() => {
     if (selectedBoard) {
-      fetchColumns(selectedBoard); 
+      fetchColumns(selectedBoard);
     }
   }, [selectedBoard]);
-
-  const handleColumnCreate = async (newColumnName) => {
-    if (newColumnName.trim() && selectedBoard) {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${apiUrl}/columns`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: newColumnName,
-            boardId: selectedBoard,
-          }),
-        });
-        
-        if (!response.ok) {
-          throw new Error('Error al crear la columna');
-        }
-
-        const newColumn = await response.json();
-        setColumns(prevColumns => [...prevColumns, newColumn]);
-      } catch (error) {
-        console.error('Error al crear la columna:', error);
-      }
-    }
-  };
 
   const handleBoardCreate = async (boardName) => {
     if (boardName.trim()) {
@@ -117,6 +90,34 @@ export default function Dashboard() {
     }
   };
 
+  const handleColumnCreate = async (newColumnName) => {
+    if (newColumnName.trim() && selectedBoard) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${apiUrl}/columns`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: newColumnName,
+            boardId: selectedBoard,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al crear la columna');
+        }
+
+        const newColumn = await response.json();
+        setColumns(prevColumns => [...prevColumns, newColumn]);
+      } catch (error) {
+        console.error('Error al crear la columna:', error);
+      }
+    }
+  };
+
   const handleBoardChange = (boardId) => {
     setSelectedBoard(boardId);
   };
@@ -131,8 +132,8 @@ export default function Dashboard() {
 
   return (
     <DashboardView
-      columns={columns}
       boards={boards}
+      columns={columns}
       selectedBoard={selectedBoard}
       onBoardChange={handleBoardChange}
     >

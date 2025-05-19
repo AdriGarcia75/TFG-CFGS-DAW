@@ -30,7 +30,7 @@ const getColumns = async (req, res) => {
       return res.status(400).json({ error: 'Se necesita la ID del tablero.' });
     }
 
-    const columns = await Column.findAll({ where: { boardId } });
+    const columns = await Column.findAll({ where: { boardId }, order: [['display_order', 'ASC']]});
     return res.status(200).json(columns);
   } catch (error) {
     console.error('Error al obtener las columnas', error);

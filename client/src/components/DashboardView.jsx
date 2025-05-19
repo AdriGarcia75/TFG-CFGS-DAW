@@ -10,10 +10,9 @@ export default function DashboardView({ columns, boards, selectedBoard, onBoardC
           <a href="#" className="hover:bg-gray-700 p-2 rounded">Proyectos</a>
           <a href="#" className="hover:bg-gray-700 p-2 rounded">Opciones</a>
         </nav>
-        
       </aside>
 
-      <main className="flex-1 bg-gray-100 p-6 overflow-auto">
+      <main className="flex-1 bg-gray-200 p-6 overflow-auto">
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-semibold">Dashboard</h1>
         </header>
@@ -32,35 +31,43 @@ export default function DashboardView({ columns, boards, selectedBoard, onBoardC
           ))}
         </select>
 
-        {/* here, the createColumns button will be shown */}
+        {/* here, the buttons will be shown */}
         {children}
 
-        <div className="grid grid-cols-3 gap-6">
-          {columns.length === 0 ? (
-            <div className="col-span-3 text-center">
-              <p>
-                No hay columnas disponibles. ¡Si es tu primera vez en AnyTasks,
-                clica en crear columnas!
-              </p>
-            </div>
-          ) : (
-            columns.map((col, idx) => (
-              <div key={idx} className="flex flex-col">
-                <h2 className="text-xl font-bold mb-2">{col.name}</h2>
-                <div className={`rounded p-4 space-y-4 ${col.color}`}>
-                  {col.tasks &&
-                    col.tasks.map((task, i) => (
-                      <div
-                        key={i}
-                        className="bg-white p-3 rounded shadow hover:shadow-md cursor-pointer"
-                      >
-                        {task.title}
-                      </div>
-                    ))}
-                </div>
+        <div className="overflow-x-auto">
+          <div className="flex gap-6 min-w-fit px-4 pb-4 h-[calc(100vh-100px)]">
+            {columns.length === 0 ? (
+              <div className="text-center w-full">
+                <p>
+                  No hay columnas disponibles. ¡Si es tu primera vez en AnyTasks,
+                  clica en crear columnas!
+                </p>
               </div>
-            ))
-          )}
+            ) : (
+              columns.map((col, idx) => (
+                <div
+                  key={idx}
+                  className="w-64 flex-shrink-0 flex flex-col bg-gray-50 border-slate-900"
+                  style={{ height: '100%' }}
+                >
+                  <h2 className="text-xl font-bold mb-2">{col.name}</h2>
+                  <div
+                    className={`rounded p-4 space-y-4 flex-1 overflow-auto ${col.color}`}
+                  >
+                    {col.tasks &&
+                      col.tasks.map((task, i) => (
+                        <div
+                          key={i}
+                          className="bg-white p-3 rounded shadow hover:shadow-md cursor-pointer border-slate-900"
+                        >
+                          {task.title}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </main>
     </div>
