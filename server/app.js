@@ -7,6 +7,7 @@ const authMiddleware = require('./middlewares/auth.js');
 const authRoutes = require('./routes/authRoutes.js');
 const columnsRoutes = require('./routes/columns.js');
 const boardsRoutes = require('./routes/boards.js');
+const tasksRoutes = require('./routes/tasks.js');
 
 const app = express();
 
@@ -40,8 +41,8 @@ app.get('/test', (req, res) => {
 
 // protected routes
 app.use('/api/columns', authMiddleware, columnsRoutes);
-
 app.use('/api/boards', authMiddleware, boardsRoutes);
+app.use('/api/tasks', authMiddleware, tasksRoutes);
 
 app.get('/api/test', authMiddleware, (req, res) => {
 	res.json({ message: 'protected test' });

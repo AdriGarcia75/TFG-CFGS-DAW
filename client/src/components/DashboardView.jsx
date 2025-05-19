@@ -1,6 +1,10 @@
 import React from 'react';
 
-export default function DashboardView({ columns, boards, selectedBoard, onBoardChange, children }) {
+export default function DashboardView({ columns, boards, selectedBoard, onBoardChange, children, getTasksForColumn }) {
+    columns.forEach((col) => {
+    const tasksForCol = getTasksForColumn(col.id);
+    console.log(`📦 Tareas para columna "${col.name}" (id: ${col.id}):`, tasksForCol);
+  });
   return (
     <div className="flex h-screen">
       <aside className="w-64 bg-gray-800 text-white flex flex-col p-4">
@@ -35,7 +39,7 @@ export default function DashboardView({ columns, boards, selectedBoard, onBoardC
         {children}
 
         <div className="overflow-x-auto">
-          <div className="flex gap-6 min-w-fit px-4 pb-4 h-[calc(100vh-100px)]">
+          <div className="flex gap-6 min-w-fit px-0 pb-4 h-[calc(100vh-100px)]">
             {columns.length === 0 ? (
               <div className="text-center w-full">
                 <p>
@@ -44,9 +48,10 @@ export default function DashboardView({ columns, boards, selectedBoard, onBoardC
                 </p>
               </div>
             ) : (
-              columns.map((col, idx) => (
+              columns.map((col) => (
+                
                 <div
-                  key={idx}
+                  key={col.id}
                   className="w-64 flex-shrink-0 flex flex-col bg-gray-50 border-slate-900"
                   style={{ height: '100%' }}
                 >
@@ -54,15 +59,14 @@ export default function DashboardView({ columns, boards, selectedBoard, onBoardC
                   <div
                     className={`rounded p-4 space-y-4 flex-1 overflow-auto ${col.color}`}
                   >
-                    {col.tasks &&
-                      col.tasks.map((task, i) => (
-                        <div
-                          key={i}
-                          className="bg-white p-3 rounded shadow hover:shadow-md cursor-pointer border-slate-900"
-                        >
-                          {task.title}
-                        </div>
-                      ))}
+                    {getTasksForColumn(col.id).map((task) => (
+                      <div
+                        key={task.id}
+                        className="bg-white p-3 rounded shadow hover:shadow-md cursor-pointer border-slate-900"
+                      >
+                        {task.title}
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))

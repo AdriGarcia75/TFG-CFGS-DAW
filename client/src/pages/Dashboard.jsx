@@ -54,6 +54,28 @@ export default function Dashboard() {
     }
   };
 
+  const [tasks, setTasks] = useState([]);
+
+  const fetchTasks = async (boardId) => {
+    if (!boardId) return;
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${apiUrl}/tasks/by-board?boardId=${boardId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Error al obtener las tareas');
+      }
+      const data = await response.json();
+      setTasks(data);
+    } catch (error) {
+      console.error('Error al cargar las tareas:', error);
+    }
+  };
+
   // this calls fetchBoards on web load
   useEffect(() => {
     fetchBoards();
@@ -62,6 +84,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (selectedBoard) {
       fetchColumns(selectedBoard);
+      fetchTasks(selectedBoard);
     }
   }, [selectedBoard]);
 
@@ -118,6 +141,10 @@ export default function Dashboard() {
     }
   };
 
+  // this function is used in DashboardView to get every task from a column, used in the loop to then display every task of a column
+  const getTasksForColumn = (columnId) =>
+    tasks.filter(task => task.columnId === columnId);
+
   const handleBoardChange = (boardId) => {
     setSelectedBoard(boardId);
   };
@@ -134,15 +161,18 @@ export default function Dashboard() {
     <DashboardView
       boards={boards}
       columns={columns}
+      tasks={tasks}
+      getTasksForColumn={(columnId) =>
+        tasks.filter((task) => task.columnId === columnId)
+      }
       selectedBoard={selectedBoard}
       onBoardChange={handleBoardChange}
     >
       <div className="flex space-x-4 mt-6">
         <CreateBoardButton onCreateBoard={handleBoardCreate} />
-        <CreateColumnButton
-          onCreateColumn={handleColumnCreate}
-        />
+        <CreateColumnButton onCreateColumn={handleColumnCreate} />
       </div>
     </DashboardView>
   );
+
 }

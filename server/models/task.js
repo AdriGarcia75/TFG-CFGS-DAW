@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    display_order: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     due_date: {
       type: DataTypes.DATE,
       allowNull: true,
