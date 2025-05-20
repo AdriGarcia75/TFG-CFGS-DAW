@@ -1,10 +1,6 @@
 import React from 'react';
 
 export default function DashboardView({ columns, boards, selectedBoard, onBoardChange, children, getTasksForColumn }) {
-    columns.forEach((col) => {
-    const tasksForCol = getTasksForColumn(col.id);
-    console.log(`📦 Tareas para columna "${col.name}" (id: ${col.id}):`, tasksForCol);
-  });
   return (
     <div className="flex h-screen">
       <aside className="w-64 bg-gray-800 text-white flex flex-col p-4">
