@@ -61,20 +61,31 @@ const getTasksByBoard = async (req, res) => {
 
 const getTasksByColumn = async (req, res) => {
   try {
-    const { columnId } = req.query;
+    const { columnId, columnIds } = req.query;
 
-    if (!columnId) {
-      return res.status(400).json({ error: 'Se necesita la ID de la columna.' });
+    if (!columnId && !columnIds) {
+      return res.status(400).json({ error: 'Se necesitan las IDs de las columnas' });
     }
 
-    const tasks = await Task.findAll({
-      where: { columnId },
-      order: [['display_order', 'ASC']]
-    });
+    let tasks;
+
+    if (columnIds) {
+      // convert the columns ids to a proper array
+      const idsArray = columnIds.split(',').map(id => Number(id));
+      tasks = await Task.findAll({
+        where: { columnId: idsArray },
+        order: [['display_order', 'ASC']]
+      });
+    } else {
+      tasks = await Task.findAll({
+        where: { columnId: columnId },
+        order: [['display_order', 'ASC']]
+      });
+    }
 
     return res.status(200).json(tasks);
   } catch (error) {
-    console.error('Error al obtener tareas de la columna:', error);
+    console.error('Error al obtener las tareas de las columna(s):', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };

@@ -46,9 +46,21 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: Sequelize.NOW,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    boardId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    columnId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   });
 
-  Task.associate = function(models) {
+  Task.associate = function (models) {
     Task.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'SET NULL',

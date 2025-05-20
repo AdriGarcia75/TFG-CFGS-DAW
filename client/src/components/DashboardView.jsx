@@ -1,4 +1,5 @@
 import React from 'react';
+import TaskCard from './TaskCard'; 
 
 export default function DashboardView({ columns, boards, selectedBoard, onBoardChange, children, getTasksForColumn }) {
   return (
@@ -44,28 +45,31 @@ export default function DashboardView({ columns, boards, selectedBoard, onBoardC
                 </p>
               </div>
             ) : (
-              columns.map((col) => (
-                
-                <div
-                  key={col.id}
-                  className="w-64 flex-shrink-0 flex flex-col bg-gray-50 border-slate-900"
-                  style={{ height: '100%' }}
-                >
-                  <h2 className="text-xl font-bold mb-2">{col.name}</h2>
+              columns.map((col) => {
+                const tasksForColumn = getTasksForColumn(col.id) || [];
+
+                return (
                   <div
-                    className={`rounded p-4 space-y-4 flex-1 overflow-auto ${col.color}`}
+                    key={col.id}
+                    className="w-64 flex-shrink-0 flex flex-col bg-gray-50 border-slate-900"
+                    style={{ height: '100%' }}
                   >
-                    {getTasksForColumn(col.id).map((task) => (
-                      <div
-                        key={task.id}
-                        className="bg-white p-3 rounded shadow hover:shadow-md cursor-pointer border-slate-900"
-                      >
-                        {task.title}
-                      </div>
-                    ))}
+                    <h2 className="text-xl font-bold mb-2">{col.name}</h2>
+                    <div
+                      className={`rounded p-4 space-y-4 flex-1 overflow-auto ${col.color || ''}`}
+                    >
+                      {tasksForColumn.length === 0 ? (
+                        <p className="text-gray-500">No hay tareas en esta columna.</p>
+                      ) : (
+                        tasksForColumn.map((task) => (
+                          // use the TaskCard component for every task
+                          <TaskCard key={task.id} task={task} />
+                        ))
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>

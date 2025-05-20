@@ -9,8 +9,18 @@ export default function Dashboard() {
   const [newColumnName, setNewColumnName] = useState('');
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [tasks, setTasks] = useState([]);
+  const [tasksByColumn, setTasksByColumn] = useState({});
 
   const apiUrl = "http://localhost:3000/api";
+
+  function groupTasksByColumn(tasks) {
+    return tasks.reduce((acc, task) => {
+      if (!acc[task.columnId]) acc[task.columnId] = [];
+      acc[task.columnId].push(task);
+      return acc;
+    }, {});
+  }
 
   const fetchBoards = async () => {
     try {
@@ -49,34 +59,38 @@ export default function Dashboard() {
       }
       const data = await response.json();
       setColumns(data);
+
+      fetchTasks(data);
     } catch (error) {
       console.error('Error al cargar las columnas:', error);
     }
   };
 
-  const [tasks, setTasks] = useState([]);
-
-  const fetchTasks = async (boardId) => {
-    if (!boardId) return;
+  const fetchTasks = async (columns) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${apiUrl}/tasks/by-board?boardId=${boardId}`, {
+      const columnIds = columns.map(c => c.id).join(',');
+
+      const response = await fetch(`${apiUrl}/tasks?columnIds=${columnIds}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (!response.ok) {
-        throw new Error('Error al obtener las tareas');
+        throw new Error('Error al obtener tareas por múltiples columnas');
       }
+
       const data = await response.json();
       setTasks(data);
+
+      setTasksByColumn(groupTasksByColumn(data));
     } catch (error) {
       console.error('Error al cargar las tareas:', error);
     }
   };
 
-  // this calls fetchBoards on web load
   useEffect(() => {
     fetchBoards();
   }, []);
@@ -84,7 +98,6 @@ export default function Dashboard() {
   useEffect(() => {
     if (selectedBoard) {
       fetchColumns(selectedBoard);
-      fetchTasks(selectedBoard);
     }
   }, [selectedBoard]);
 
@@ -141,10 +154,6 @@ export default function Dashboard() {
     }
   };
 
-  // this function is used in DashboardView to get every task from a column, used in the loop to then display every task of a column
-  const getTasksForColumn = (columnId) =>
-    tasks.filter(task => task.columnId === columnId);
-
   const handleBoardChange = (boardId) => {
     setSelectedBoard(boardId);
   };
@@ -162,9 +171,7 @@ export default function Dashboard() {
       boards={boards}
       columns={columns}
       tasks={tasks}
-      getTasksForColumn={(columnId) =>
-        tasks.filter((task) => task.columnId === columnId)
-      }
+      getTasksForColumn={(columnId) => tasksByColumn[columnId] || []}
       selectedBoard={selectedBoard}
       onBoardChange={handleBoardChange}
     >
@@ -174,5 +181,4 @@ export default function Dashboard() {
       </div>
     </DashboardView>
   );
-
 }

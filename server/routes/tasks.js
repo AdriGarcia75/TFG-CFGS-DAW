@@ -9,8 +9,8 @@ const {
 } = require('../controllers/crudTasks');
 
 router.post('/', createTask);
+router.get('/', getTasksByColumn);
 router.get('/by-board', getTasksByBoard);
-router.get('/by-column', getTasksByColumn);
 router.put('/:taskId', updateTask);
 router.delete('/:taskId', deleteTask);
 
