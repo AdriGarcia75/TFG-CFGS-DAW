@@ -11,6 +11,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [tasksByColumn, setTasksByColumn] = useState({});
+  const [selectedTask, setSelectedTask] = useState(null);
 
   const apiUrl = "http://localhost:3000/api";
 
@@ -171,6 +172,9 @@ export default function Dashboard() {
       boards={boards}
       columns={columns}
       tasks={tasks}
+      selectedTask={selectedTask}
+      onTaskSelect={setSelectedTask}
+      onTaskClose={() => setSelectedTask(null)}
       getTasksForColumn={(columnId) => tasksByColumn[columnId] || []}
       selectedBoard={selectedBoard}
       onBoardChange={handleBoardChange}

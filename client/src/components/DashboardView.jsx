@@ -1,7 +1,17 @@
 import React from 'react';
-import TaskCard from './TaskCard'; 
+import TaskCard from './TaskCard';
+import TaskDetail from './TaskDetail';
 
-export default function DashboardView({ columns, boards, selectedBoard, onBoardChange, children, getTasksForColumn }) {
+export default function DashboardView({ columns,
+  boards,
+  selectedBoard,
+  onBoardChange,
+  children,
+  getTasksForColumn,
+  selectedTask,
+  onTaskSelect,
+  onTaskClose
+}) {
   return (
     <div className="flex h-screen">
       <aside className="w-64 bg-gray-800 text-white flex flex-col p-4">
@@ -63,7 +73,7 @@ export default function DashboardView({ columns, boards, selectedBoard, onBoardC
                       ) : (
                         tasksForColumn.map((task) => (
                           // use the TaskCard component for every task
-                          <TaskCard key={task.id} task={task} />
+                          <TaskCard key={task.id} task={task} onClick={() => onTaskSelect(task)} />
                         ))
                       )}
                     </div>
@@ -74,6 +84,20 @@ export default function DashboardView({ columns, boards, selectedBoard, onBoardC
           </div>
         </div>
       </main>
+
+      {/* task detail  */}
+      {selectedTask && (
+        <>
+          {/* black overlay for styling */}
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={onTaskClose}
+          />
+          <div className="fixed top-1/2 left-1/2 w-96 max-w-full bg-white rounded-lg shadow-xl z-50 p-6 transform -translate-x-1/2 -translate-y-1/2 overflow-auto max-h-[80vh]">
+            <TaskDetail task={selectedTask} onClick={onTaskClose} />
+          </div>
+        </>
+      )}
     </div>
   );
 }
