@@ -12,7 +12,7 @@ const tasksRoutes = require('./routes/tasks.js');
 const app = express();
 
 const PORT = 3000;
-// warning, this MUST be the same port used in client's npm start, but I advise to not use any port other than 8080
+// default port for backend connections, if changed, check all front-ends references to match the value here
 const FRONTEND_PORT = 8080;
 
 const attachmentsPath = join(__dirname, 'attachments');
@@ -29,10 +29,6 @@ app.use(express.json());
 app.use(express.static(join(__dirname, 'landing')));
 
 // unprotected routes
-app.get('/', (req, res) => {
-	res.sendFile(join(__dirname, 'landing', 'index.html'));
-});
-
 app.use('/api/auth', authRoutes);
 
 app.get('/test', (req, res) => {
