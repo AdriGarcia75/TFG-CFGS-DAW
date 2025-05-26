@@ -4,6 +4,7 @@ const {
   createTask,
   getTasksByBoard,
   getTasksByColumn,
+  getSelectorOptions,
   updateTask,
   deleteTask
 } = require('../controllers/crudTasks');
@@ -11,6 +12,7 @@ const {
 router.post('/', createTask);
 router.get('/', getTasksByColumn);
 router.get('/by-board', getTasksByBoard);
+router.get('/selectorOptions', getSelectorOptions)
 router.put('/:taskId', updateTask);
 router.delete('/:taskId', deleteTask);
 

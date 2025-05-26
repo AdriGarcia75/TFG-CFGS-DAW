@@ -48,7 +48,7 @@ app.get('/api/test', authMiddleware, (req, res) => {
 sequelize.authenticate()
     .then(() => {
         app.listen(PORT, () => {
-            console.log(`Accede a la landing page de la página desde http://localhost:${PORT}`);
+            console.log(`Servidor ejecutandose en http://localhost:${PORT}, ejecuta npm start en /client para utilizar AnyTasks`);
         });
     })
     .catch((err) => {

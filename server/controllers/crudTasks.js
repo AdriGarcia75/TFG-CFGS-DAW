@@ -90,6 +90,23 @@ const getTasksByColumn = async (req, res) => {
   }
 };
 
+const getSelectorOptions = async (req, res) => {
+  try {
+    const statusEnum = Task.rawAttributes.status.values;
+    const priorityEnum = Task.rawAttributes.priority.values;
+    const recurrenceEnum = Task.rawAttributes.recurrence.values;
+
+    return res.status(200).json({
+      status: statusEnum,
+      priority: priorityEnum,
+      recurrence: recurrenceEnum,
+    });
+  } catch (error) {
+    console.error('Error al obtener opciones de los selectores:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 const updateTask = async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -131,6 +148,7 @@ module.exports = {
   createTask,
   getTasksByBoard,
   getTasksByColumn,
+  getSelectorOptions,
   updateTask,
   deleteTask,
 };

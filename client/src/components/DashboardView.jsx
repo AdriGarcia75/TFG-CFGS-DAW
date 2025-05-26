@@ -1,6 +1,6 @@
 import React from 'react';
 import TaskCard from './TaskCard';
-import TaskDetail from './TaskDetail';
+import TaskDetail from '../pages/TaskDetail';
 
 export default function DashboardView({ columns,
   boards,
