@@ -11,6 +11,7 @@ const {
 
 router.post('/', createTask);
 router.get('/', getTasksByColumn);
+router.delete('/', deleteTask)
 router.get('/by-board', getTasksByBoard);
 router.get('/selectorOptions', getSelectorOptions)
 router.put('/:taskId', updateTask);

@@ -13,6 +13,7 @@ export default function TaskDetailView({
     setPriority,
     selectorOptions,
     handleSave,
+    handleDelete,
     onClick,
 }) {
     return (
@@ -87,13 +88,20 @@ export default function TaskDetailView({
                     ))}
                 </select>
             </div>
-
-            <button
-                onClick={handleSave}
-                className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-            >
-                Guardar cambios
-            </button>
+            <div className="flex justify-end gap-4 mt-4">
+                <button
+                    onClick={handleSave}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                    Guardar
+                </button>
+                <button
+                    onClick={handleDelete}
+                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                >
+                    Eliminar
+                </button>
+            </div>
         </div>
     );
 }

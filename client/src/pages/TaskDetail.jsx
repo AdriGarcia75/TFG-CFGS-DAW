@@ -64,6 +64,33 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
     }
   };
 
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm('¿Estás seguro de que quieres eliminar esta tarea?');
+    if (!confirmDelete) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://localhost:3000/api/tasks/${task.id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        alert('Tarea eliminada correctamente');
+        onTaskUpdate({ deleted: true, id: task.id }); // update the task on board
+        onClick(); // close the taskDetail by registering a click
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Error al eliminar la tarea');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error de conexión al eliminar ' + err);
+    }
+  };
+
   if (!selectorOptions) return null;
 
   return (
@@ -80,6 +107,7 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
       setPriority={setPriority}
       selectorOptions={selectorOptions}
       handleSave={handleSave}
+      handleDelete={handleDelete}
       onClick={onClick}
     />
   );

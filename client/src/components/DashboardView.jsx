@@ -15,6 +15,7 @@ export default function DashboardView({
   onTaskSelect,
   onTaskClose,
   onTaskUpdate,
+  onTaskDelete,
   onTaskCreate
 }) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -87,7 +88,12 @@ export default function DashboardView({
                       ) : (
                         tasksForColumn.map((task) => (
                           // use the TaskCard component for every task
-                          <TaskCard key={task.id} task={task} onClick={() => onTaskSelect(task)} />
+                          <TaskCard
+                            key={task.id}
+                            task={task}
+                            onClick={() => onTaskSelect(task)}
+                            onDelete={onTaskDelete}
+                          />
                         ))
                       )}
                     </div>
@@ -111,6 +117,7 @@ export default function DashboardView({
               task={selectedTask}
               onClick={onTaskClose}
               onTaskUpdate={onTaskUpdate}
+              onTaskDelete={onTaskDelete}
             />
           </div>
         </>

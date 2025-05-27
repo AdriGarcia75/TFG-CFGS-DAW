@@ -163,7 +163,7 @@ export default function Dashboard() {
       // decode the jwt token to get the current ID
       const payloadBase64 = token.split('.')[1];
       const payload = JSON.parse(atob(payloadBase64));
-      
+
       const userId = payload.id;
 
       const response = await fetch(`${apiUrl}/tasks`, {
@@ -211,6 +211,33 @@ export default function Dashboard() {
     });
   };
 
+  const handleTaskDelete = async (taskId) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await fetch(`${apiUrl}/tasks/${taskId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al eliminar la tarea');
+      }
+
+      setTasks((prevTasks) => {
+        const filteredTasks = prevTasks.filter(task => task.id !== taskId);
+        setTasksByColumn(groupTasksByColumn(filteredTasks));
+        return filteredTasks;
+      });
+
+    } catch (error) {
+      console.error('Error al eliminar la tarea:', error);
+    }
+  };
+
   return (
     <DashboardView
       boards={boards}
@@ -224,6 +251,7 @@ export default function Dashboard() {
       onBoardChange={handleBoardChange}
       onTaskUpdate={handleTaskUpdate}
       onTaskCreate={handleTaskCreate}
+      onTaskDelete={handleTaskDelete}
     >
       <div className="flex space-x-4 mt-6">
         <CreateBoardButton onCreateBoard={handleBoardCreate} />
