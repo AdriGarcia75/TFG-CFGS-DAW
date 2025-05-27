@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DashboardView from '../components/DashboardView';
-import CreateColumnButton from '../components/createColumnButton';
+import CreateColumnButton from '../components/CreateColumnButton';
 import CreateBoardButton from '../components/CreateBoardButton';
 
 export default function Dashboard() {
@@ -11,6 +11,7 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [tasksByColumn, setTasksByColumn] = useState({});
   const [selectedTask, setSelectedTask] = useState(null);
+  const [showTaskModal, setShowTaskModal] = useState(false);
 
   const apiUrl = "http://localhost:3000/api";
 
@@ -155,6 +156,30 @@ export default function Dashboard() {
     }
   };
 
+  const handleTaskCreate = async (taskData) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${apiUrl}/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(taskData),
+      });
+
+      if (!response.ok) throw new Error('Error al crear la tarea');
+
+      const newTask = await response.json();
+      const updatedTasks = [...tasks, newTask];
+      setTasks(updatedTasks);
+      setTasksByColumn(groupTasksByColumn(updatedTasks));
+    } catch (error) {
+      console.error('Error al crear la tarea:', error);
+    }
+  };
+
+
   const handleBoardChange = (boardId) => {
     setSelectedBoard(boardId);
   };
@@ -189,6 +214,7 @@ export default function Dashboard() {
       selectedBoard={selectedBoard}
       onBoardChange={handleBoardChange}
       onTaskUpdate={handleTaskUpdate}
+      onTaskCreate={handleTaskCreate}
     >
       <div className="flex space-x-4 mt-6">
         <CreateBoardButton onCreateBoard={handleBoardCreate} />

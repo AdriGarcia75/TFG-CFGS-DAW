@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TaskCard from './TaskCard';
 import TaskDetail from '../pages/TaskDetail';
+import CreateTaskButton from './CreateTaskButton';
+import CreateTask from './CreateTask';
 
-export default function DashboardView({ columns,
+export default function DashboardView({
+  columns,
   boards,
   selectedBoard,
   onBoardChange,
@@ -11,8 +14,19 @@ export default function DashboardView({ columns,
   selectedTask,
   onTaskSelect,
   onTaskClose,
-  onTaskUpdate
+  onTaskUpdate,
+  onTaskCreate
 }) {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const openCreateModal = () => setIsCreateModalOpen(true);
+  const closeCreateModal = () => setIsCreateModalOpen(false);
+
+  const handleCreateTask = (taskData) => {
+    onTaskCreate(taskData);
+    closeCreateModal();
+  };
+
   return (
     <div className="flex h-screen">
       <aside className="w-64 bg-gray-800 text-white flex flex-col p-4">
@@ -27,8 +41,8 @@ export default function DashboardView({ columns,
       <main className="flex-1 bg-gray-200 p-6 overflow-auto">
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-semibold">Dashboard</h1>
+          <CreateTaskButton onClick={openCreateModal} />
         </header>
-
         {/* list of boards */}
         <select
           className="w-auto p-2 border rounded"
@@ -42,7 +56,6 @@ export default function DashboardView({ columns,
             </option>
           ))}
         </select>
-
         {/* here, the buttons will be shown */}
         {children}
 
@@ -85,7 +98,6 @@ export default function DashboardView({ columns,
           </div>
         </div>
       </main>
-
       {/* task detail  */}
       {selectedTask && (
         <>
@@ -102,6 +114,15 @@ export default function DashboardView({ columns,
             />
           </div>
         </>
+      )}
+
+      {isCreateModalOpen && (
+        <CreateTask
+          onClose={closeCreateModal}
+          onCreate={handleCreateTask}
+          columns={columns}
+          boardId={selectedBoard}
+        />
       )}
     </div>
   );
