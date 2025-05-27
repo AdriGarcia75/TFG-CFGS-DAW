@@ -159,13 +159,23 @@ export default function Dashboard() {
   const handleTaskCreate = async (taskData) => {
     try {
       const token = localStorage.getItem('token');
+
+      // decode the jwt token to get the current ID
+      const payloadBase64 = token.split('.')[1];
+      const payload = JSON.parse(atob(payloadBase64));
+      
+      const userId = payload.id;
+
       const response = await fetch(`${apiUrl}/tasks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(taskData),
+        body: JSON.stringify({
+          ...taskData,
+          userId,
+        }),
       });
 
       if (!response.ok) throw new Error('Error al crear la tarea');
@@ -178,7 +188,6 @@ export default function Dashboard() {
       console.error('Error al crear la tarea:', error);
     }
   };
-
 
   const handleBoardChange = (boardId) => {
     setSelectedBoard(boardId);
