@@ -10,7 +10,8 @@ export default function DashboardView({ columns,
   getTasksForColumn,
   selectedTask,
   onTaskSelect,
-  onTaskClose
+  onTaskClose,
+  onTaskUpdate
 }) {
   return (
     <div className="flex h-screen">
@@ -94,7 +95,11 @@ export default function DashboardView({ columns,
             onClick={onTaskClose}
           />
           <div className="fixed top-1/2 left-1/2 w-96 max-w-full bg-white rounded-lg shadow-xl z-50 p-6 transform -translate-x-1/2 -translate-y-1/2 overflow-auto max-h-[80vh]">
-            <TaskDetail task={selectedTask} onClick={onTaskClose} />
+            <TaskDetail
+              task={selectedTask}
+              onClick={onTaskClose}
+              onTaskUpdate={onTaskUpdate}
+            />
           </div>
         </>
       )}

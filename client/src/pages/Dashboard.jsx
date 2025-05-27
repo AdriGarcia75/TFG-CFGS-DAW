@@ -6,7 +6,6 @@ import CreateBoardButton from '../components/CreateBoardButton';
 export default function Dashboard() {
   const [columns, setColumns] = useState([]);
   const [boards, setBoards] = useState([]);
-  const [newColumnName, setNewColumnName] = useState('');
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
@@ -92,7 +91,7 @@ export default function Dashboard() {
     }
   };
 
-  // execute on useEffect as if its executed directly it will be executed on every render, and not only when the Dashboard is mounted 
+  // executed on a useEffect because if its executed directly it will be executed on every render, and not only when the Dashboard is mounted (the desired here)
   useEffect(() => {
     fetchBoards();
   }, []);
@@ -168,6 +167,16 @@ export default function Dashboard() {
     );
   }
 
+  const handleTaskUpdate = (updatedTask) => {
+    setTasks((prevTasks) => {
+      const newTasks = prevTasks.map(task =>
+        task.id === updatedTask.id ? updatedTask : task
+      );
+      setTasksByColumn(groupTasksByColumn(newTasks));
+      return newTasks;
+    });
+  };
+
   return (
     <DashboardView
       boards={boards}
@@ -179,6 +188,7 @@ export default function Dashboard() {
       getTasksForColumn={(columnId) => tasksByColumn[columnId] || []}
       selectedBoard={selectedBoard}
       onBoardChange={handleBoardChange}
+      onTaskUpdate={handleTaskUpdate}
     >
       <div className="flex space-x-4 mt-6">
         <CreateBoardButton onCreateBoard={handleBoardCreate} />

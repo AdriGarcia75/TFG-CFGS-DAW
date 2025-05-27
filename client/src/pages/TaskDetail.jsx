@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TaskDetailView from '../components/TaskDetailView';
 
-export default function TaskDetail({ task, onClick }) {
+export default function TaskDetail({ task, onClick, onTaskUpdate }) {
   const [title, setTitle] = useState(task.title || '');
   const [description, setDescription] = useState(task.description || '');
   const [status, setStatus] = useState(task.status || '');
@@ -50,15 +50,17 @@ export default function TaskDetail({ task, onClick }) {
       });
 
       if (res.ok) {
+        const updatedTask = await res.json();
         alert('Tarea actualizada correctamente');
-        onClick();
+        onTaskUpdate(updatedTask);  // update the task on board
+        onClick();  // close the taskDetail by registering a click
       } else {
         const data = await res.json();
         alert(data.error || 'Error al actualizar la tarea');
       }
     } catch (err) {
       console.error(err);
-      alert('Error de red al guardar');
+      alert('Error de conexión al guardar ' + err);
     }
   };
 
