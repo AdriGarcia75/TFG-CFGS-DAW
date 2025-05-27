@@ -9,7 +9,6 @@ const createTask = async (req, res) => {
       status,
       priority,
       userId,
-      recurrence,
       boardId,
       columnId,
       display_order
@@ -26,7 +25,6 @@ const createTask = async (req, res) => {
       status,
       priority,
       userId,
-      recurrence,
       boardId,
       columnId,
       display_order: display_order || 0
@@ -94,12 +92,10 @@ const getSelectorOptions = async (req, res) => {
   try {
     const statusEnum = Task.rawAttributes.status.values;
     const priorityEnum = Task.rawAttributes.priority.values;
-    const recurrenceEnum = Task.rawAttributes.recurrence.values;
 
     return res.status(200).json({
       status: statusEnum,
       priority: priorityEnum,
-      recurrence: recurrenceEnum,
     });
   } catch (error) {
     console.error('Error al obtener opciones de los selectores:', error);

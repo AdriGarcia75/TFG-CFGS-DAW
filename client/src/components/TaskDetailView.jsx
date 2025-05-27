@@ -11,8 +11,6 @@ export default function TaskDetailView({
     setStatus,
     priority,
     setPriority,
-    recurrence,
-    setRecurrence,
     selectorOptions,
     handleSave,
     onClick,
@@ -83,21 +81,6 @@ export default function TaskDetailView({
                     className="w-full border p-2 rounded capitalize"
                 >
                     {selectorOptions.priority.map((opt) => (
-                        <option key={opt} value={opt}>
-                            {opt}
-                        </option>
-                    ))}
-                </select>
-            </div>
-
-            <div>
-                <label className="font-semibold block mb-1">Recurrencia:</label>
-                <select
-                    value={recurrence}
-                    onChange={(e) => setRecurrence(e.target.value)}
-                    className="w-full border p-2 rounded capitalize"
-                >
-                    {selectorOptions.recurrence.map((opt) => (
                         <option key={opt} value={opt}>
                             {opt}
                         </option>

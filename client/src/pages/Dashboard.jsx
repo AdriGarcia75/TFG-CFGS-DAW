@@ -92,6 +92,7 @@ export default function Dashboard() {
     }
   };
 
+  // execute on useEffect as if its executed directly it will be executed on every render, and not only when the Dashboard is mounted 
   useEffect(() => {
     fetchBoards();
   }, []);

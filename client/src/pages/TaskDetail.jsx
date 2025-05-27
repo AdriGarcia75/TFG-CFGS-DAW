@@ -6,7 +6,6 @@ export default function TaskDetail({ task, onClick }) {
   const [description, setDescription] = useState(task.description || '');
   const [status, setStatus] = useState(task.status || '');
   const [priority, setPriority] = useState(task.priority || '');
-  const [recurrence, setRecurrence] = useState(task.recurrence || '');
   const [dueDate, setDueDate] = useState(task.due_date?.slice(0, 10) || '');
 
   const [selectorOptions, setOptionsSelector] = useState(null);
@@ -46,7 +45,6 @@ export default function TaskDetail({ task, onClick }) {
           description,
           status,
           priority,
-          recurrence,
           due_date: dueDate,
         }),
       });
@@ -78,8 +76,6 @@ export default function TaskDetail({ task, onClick }) {
       setStatus={setStatus}
       priority={priority}
       setPriority={setPriority}
-      recurrence={recurrence}
-      setRecurrence={setRecurrence}
       selectorOptions={selectorOptions}
       handleSave={handleSave}
       onClick={onClick}

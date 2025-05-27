@@ -34,10 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM('low', 'medium', 'high'),
       defaultValue: 'medium',
     },
-    recurrence: {
-      type: DataTypes.ENUM('daily', 'weekly', 'monthly', 'none'),
-      defaultValue: 'none',
-    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: Sequelize.NOW,
