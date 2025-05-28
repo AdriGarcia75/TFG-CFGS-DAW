@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function CreateTask({ onClose, onCreate, columns, boardId }) {
   const [title, setTitle] = useState('');
@@ -8,9 +8,16 @@ export default function CreateTask({ onClose, onCreate, columns, boardId }) {
   const [status, setStatus] = useState('pending');
   const [columnId, setColumnId] = useState(columns[0]?.id || '');
 
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setDueDate(today);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || !columnId) return;
+
+    // prevent the sending of the form if any required fields are empty
+    if (!title || !dueDate || !priority || !status || !columnId) return;
 
     onCreate({
       title,

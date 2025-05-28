@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TaskCard from './TaskCard';
 import TaskDetail from '../pages/TaskDetail';
 import CreateTaskButton from './CreateTaskButton';
-import CreateTask from './CreateTask';
+import CreateTask from './CreateTaskForm';
 
 export default function DashboardView({
   columns,

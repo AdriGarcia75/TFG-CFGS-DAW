@@ -92,7 +92,7 @@ export default function Dashboard() {
     }
   };
 
-  // executed on a useEffect because if its executed directly it will be executed on every render, and not only when the Dashboard is mounted (the desired here)
+  // executed on a useEffect because if its executed directly it will be executed on every render, and not only when the Dashboard is mounted
   useEffect(() => {
     fetchBoards();
   }, []);
@@ -160,7 +160,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem('token');
 
-      // decode the jwt token to get the current ID
+      // decode the jwt token to get the current user ID
       const payloadBase64 = token.split('.')[1];
       const payload = JSON.parse(atob(payloadBase64));
 
