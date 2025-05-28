@@ -78,7 +78,6 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
       });
 
       if (res.ok) {
-        alert('Tarea eliminada correctamente');
         onTaskUpdate({ deleted: true, id: task.id }); // update the task on board
         onClick(); // close the taskDetail by registering a click
       } else {

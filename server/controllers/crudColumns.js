@@ -2,17 +2,24 @@ const { Column } = require('../models');
 
 const createColumn = async (req, res) => {
   try {
-    const { boardId, name, description, display_order, color } = req.body;
+    const { boardId, name, description, color } = req.body;
 
     if (!boardId || !name) {
       return res.status(400).json({ error: 'Se necesita la ID del tablero y un nombre.' });
     }
 
+    // search the biggest/last display_order to place it +1
+    const maxOrderColumn = await Column.findOne({
+      where: { boardId },
+      order: [['display_order', 'DESC']],
+    });
+    const nextOrder = maxOrderColumn ? maxOrderColumn.display_order + 1 : 0;
+
     const newColumn = await Column.create({
       boardId,
       name,
       description,
-      display_order: display_order || 0,
+      display_order: nextOrder,
       color: color || 'bg-gray-100',
     });
 
@@ -23,6 +30,7 @@ const createColumn = async (req, res) => {
   }
 };
 
+
 const getColumns = async (req, res) => {
   try {
     const { boardId } = req.query;
@@ -30,7 +38,7 @@ const getColumns = async (req, res) => {
       return res.status(400).json({ error: 'Se necesita la ID del tablero.' });
     }
 
-    const columns = await Column.findAll({ where: { boardId }, order: [['display_order', 'ASC']]});
+    const columns = await Column.findAll({ where: { boardId }, order: [['display_order', 'ASC']] });
     return res.status(200).json(columns);
   } catch (error) {
     console.error('Error al obtener las columnas', error);
