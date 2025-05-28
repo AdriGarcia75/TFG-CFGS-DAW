@@ -201,6 +201,29 @@ export default function Dashboard() {
     );
   }
 
+  const handleColumnChange = async (updatedColumn) => {
+    if (!updatedColumn.name.trim()) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${apiUrl}/columns/${updatedColumn.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name: updatedColumn.name.trim() }),
+      });
+      if (!response.ok) throw new Error('Error al actualizar la columna');
+      const updated = await response.json();
+      setColumns(prev =>
+        prev.map(col => (col.id === updated.id ? updated : col))
+      );
+    } catch (error) {
+      console.error('Error al actualizar el nombre de la columna:', error);
+    }
+  };
+
   const handleTaskUpdate = (updatedTask) => {
     setTasks((prevTasks) => {
       const newTasks = prevTasks.map(task =>
@@ -252,6 +275,7 @@ export default function Dashboard() {
       onTaskUpdate={handleTaskUpdate}
       onTaskCreate={handleTaskCreate}
       onTaskDelete={handleTaskDelete}
+      onColumnChange={handleColumnChange}
     >
       <div className="flex space-x-4 mt-6">
         <CreateBoardButton onCreateBoard={handleBoardCreate} />

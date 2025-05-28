@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import TaskCard from './TaskCard';
 import TaskDetail from '../pages/TaskDetail';
 import CreateTaskButton from './CreateTaskButton';
 import CreateTask from './CreateTaskForm';
+import ColumnComponent from './ColumnComponent';
 
 export default function DashboardView({
   columns,
@@ -16,7 +16,8 @@ export default function DashboardView({
   onTaskClose,
   onTaskUpdate,
   onTaskDelete,
-  onTaskCreate
+  onTaskCreate,
+  onColumnChange
 }) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -70,36 +71,16 @@ export default function DashboardView({
                 </p>
               </div>
             ) : (
-              columns.map((col) => {
-                const tasksForColumn = getTasksForColumn(col.id) || [];
-
-                return (
-                  <div
-                    key={col.id}
-                    className="w-64 flex-shrink-0 flex flex-col bg-gray-50 border-slate-900"
-                    style={{ height: '100%' }}
-                  >
-                    <h2 className="text-xl font-bold mb-2">{col.name}</h2>
-                    <div
-                      className={`rounded p-4 space-y-4 flex-1 overflow-auto ${col.color || ''}`}
-                    >
-                      {tasksForColumn.length === 0 ? (
-                        <p className="text-gray-500">No hay tareas en esta columna.</p>
-                      ) : (
-                        tasksForColumn.map((task) => (
-                          // use the TaskCard component for every task
-                          <TaskCard
-                            key={task.id}
-                            task={task}
-                            onClick={() => onTaskSelect(task)}
-                            onDelete={onTaskDelete}
-                          />
-                        ))
-                      )}
-                    </div>
-                  </div>
-                );
-              })
+              columns.map((col) => (
+                <ColumnComponent
+                  key={col.id}
+                  column={col}
+                  tasks={getTasksForColumn(col.id) || []}
+                  onTaskSelect={onTaskSelect}
+                  onTaskDelete={onTaskDelete}
+                  onColumnChange={onColumnChange}
+                />
+              ))
             )}
           </div>
         </div>

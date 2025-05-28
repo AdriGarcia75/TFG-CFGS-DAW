@@ -8,11 +8,8 @@ const {
 } = require('../controllers/crudColumns');
 
 router.get('/', getColumns);
-
 router.post('/', createColumn);
-
-router.put('/:columnId', updateColumn);
-
+router.patch('/:columnId', updateColumn);
 router.delete('/:columnId', deleteColumn);
 
 module.exports = router;
