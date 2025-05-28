@@ -261,6 +261,30 @@ export default function Dashboard() {
     }
   };
 
+  //drag and drop logic
+  const handleDragStart = (e, taskId) => {
+    e.dataTransfer.setData('taskId', taskId);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault(); // needed for the drop logic
+  };
+
+  const handleDrop = (e, targetColumnId) => {
+    e.preventDefault();
+    const taskId = e.dataTransfer.getData('text/plain');
+    const taskIdNum = Number(taskId); // normalise id to a number
+
+    setTasks(prevTasks => {
+      const updatedTasks = prevTasks.map(task =>
+        task.id === taskIdNum ? { ...task, columnId: targetColumnId } : task
+      );
+      setTasksByColumn(groupTasksByColumn(updatedTasks));
+      return updatedTasks;
+    });
+    // todo - add backend update calls
+  };
+
   return (
     <DashboardView
       boards={boards}
@@ -276,6 +300,9 @@ export default function Dashboard() {
       onTaskCreate={handleTaskCreate}
       onTaskDelete={handleTaskDelete}
       onColumnChange={handleColumnChange}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
     >
       <div className="flex space-x-4 mt-6">
         <CreateBoardButton onCreateBoard={handleBoardCreate} />

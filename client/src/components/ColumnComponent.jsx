@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import TaskCard from './TaskCard';
 
-export default function ColumnComponent({ column, tasks, onTaskSelect, onTaskDelete, onColumnChange }) {
+export default function ColumnComponent({
+  column,
+  tasks,
+  onTaskSelect,
+  onTaskDelete,
+  onColumnChange,
+  onDragOver,
+  onDrop,
+  onDragStart
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(column.name);
 
@@ -25,11 +34,19 @@ export default function ColumnComponent({ column, tasks, onTaskSelect, onTaskDel
     }
   };
 
+  // control the drag over to intercept the changes
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    if (onDragOver) onDragOver(e);
+  };
+
   return (
     <div
       key={column.id}
       className="w-64 flex-shrink-0 flex flex-col bg-gray-50 border-slate-900"
       style={{ height: '100%' }}
+      onDragOver={handleDragOver}
+      onDrop={(e) => onDrop(e, column.id)}
     >
       <div className="mb-2">
         {isEditing ? (
@@ -51,9 +68,7 @@ export default function ColumnComponent({ column, tasks, onTaskSelect, onTaskDel
         )}
       </div>
 
-      <div
-        className={`rounded p-4 space-y-4 flex-1 overflow-auto ${column.color || ''}`}
-      >
+      <div className={`rounded p-4 space-y-4 flex-1 overflow-auto ${column.color || ''}`}>
         {tasks.length === 0 ? (
           <p className="text-gray-500">No hay tareas en esta columna.</p>
         ) : (
@@ -63,6 +78,7 @@ export default function ColumnComponent({ column, tasks, onTaskSelect, onTaskDel
               task={task}
               onClick={() => onTaskSelect(task)}
               onDelete={onTaskDelete}
+              onDragStart={onDragStart}
             />
           ))
         )}

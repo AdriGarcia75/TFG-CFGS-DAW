@@ -17,7 +17,10 @@ export default function DashboardView({
   onTaskUpdate,
   onTaskDelete,
   onTaskCreate,
-  onColumnChange
+  onColumnChange,
+  onDragStart,
+  onDragOver,
+  onDrop,
 }) {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -79,6 +82,9 @@ export default function DashboardView({
                   onTaskSelect={onTaskSelect}
                   onTaskDelete={onTaskDelete}
                   onColumnChange={onColumnChange}
+                  onDragStart={onDragStart}
+                  onDragOver={onDragOver}
+                  onDrop={onDrop}
                 />
               ))
             )}

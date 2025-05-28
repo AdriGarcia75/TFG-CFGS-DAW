@@ -1,15 +1,20 @@
-import React from 'react';
+export default function TaskCard({ task, onClick, onDelete, onDragStart }) {
+  const handleDragStart = (e) => {
+    e.dataTransfer.setData('text/plain', task.id); // save the task id
+    if (onDragStart) onDragStart(e, task.id);
+  };
 
-export default function TaskCard({ task, onClick, onDelete }) {
   return (
     <div
+      draggable="true"
+      onDragStart={handleDragStart}
       className="bg-white p-3 rounded shadow hover:shadow-md cursor-pointer relative"
       onClick={() => onClick(task)}
     >
       <button
         className="absolute top-2 right-2 text-red-600 hover:text-red-800 text-lg font-bold"
         onClick={(e) => {
-          e.stopPropagation(); //prevent the button to open the task
+          e.stopPropagation();
           onDelete(task.id);
         }}
         aria-label="Eliminar tarea"
