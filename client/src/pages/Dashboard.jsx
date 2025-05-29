@@ -11,7 +11,6 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [tasksByColumn, setTasksByColumn] = useState({});
   const [selectedTask, setSelectedTask] = useState(null);
-  const [showTaskModal, setShowTaskModal] = useState(false);
 
   const apiUrl = "http://localhost:3000/api";
 
@@ -270,19 +269,42 @@ export default function Dashboard() {
     e.preventDefault(); // needed for the drop logic
   };
 
-  const handleDrop = (e, targetColumnId) => {
+  const handleDrop = async (e, targetColumnId) => {
     e.preventDefault();
     const taskId = e.dataTransfer.getData('text/plain');
-    const taskIdNum = Number(taskId); // normalise id to a number
+    const taskIdNum = Number(taskId);
 
-    setTasks(prevTasks => {
-      const updatedTasks = prevTasks.map(task =>
-        task.id === taskIdNum ? { ...task, columnId: targetColumnId } : task
-      );
-      setTasksByColumn(groupTasksByColumn(updatedTasks));
-      return updatedTasks;
-    });
-    // todo - add backend update calls
+    //find the target column ID
+    const targetColumn = columns.find(col => col.id === targetColumnId);
+    if (!targetColumn) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${apiUrl}/tasks/${taskIdNum}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          columnId: targetColumnId,
+          status: targetColumn.name,
+        }),
+      });
+      if (!response.ok) throw new Error('Error al actualizar la tarea');
+
+      const updatedTask = await response.json();
+
+      setTasks(prevTasks => {
+        const updatedTasks = prevTasks.map(task =>
+          task.id === taskIdNum ? updatedTask : task
+        );
+        setTasksByColumn(groupTasksByColumn(updatedTasks));
+        return updatedTasks;
+      });
+    } catch (error) {
+      console.error('Error al actualizar la tarea al moverla:', error);
+    }
   };
 
   return (

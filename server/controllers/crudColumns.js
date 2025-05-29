@@ -30,7 +30,6 @@ const createColumn = async (req, res) => {
   }
 };
 
-
 const getColumns = async (req, res) => {
   try {
     const { boardId } = req.query;
@@ -56,10 +55,10 @@ const updateColumn = async (req, res) => {
       return res.status(404).json({ error: 'Columna no encontrada.' });
     }
 
-    column.name = name || column.name;
-    column.description = description || column.description;
-    column.display_order = display_order || column.display_order;
-    column.color = color || column.color;
+    if (name !== undefined) column.name = name;
+    if (description !== undefined) column.description = description;
+    if (display_order !== undefined) column.display_order = display_order;
+    if (color !== undefined) column.color = color;
 
     await column.save();
     return res.status(200).json(column);

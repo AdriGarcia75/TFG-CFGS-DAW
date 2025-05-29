@@ -14,7 +14,7 @@ router.get('/', getTasksByColumn);
 router.delete('/', deleteTask)
 router.get('/by-board', getTasksByBoard);
 router.get('/selectorOptions', getSelectorOptions)
-router.put('/:taskId', updateTask);
+router.patch('/:taskId', updateTask);
 router.delete('/:taskId', deleteTask);
 
 module.exports = router;

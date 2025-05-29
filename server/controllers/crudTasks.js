@@ -1,4 +1,4 @@
-const { Task } = require('../models');
+const { Task, Column } = require('../models');
 
 const createTask = async (req, res) => {
   try {
@@ -90,11 +90,22 @@ const getTasksByColumn = async (req, res) => {
 
 const getSelectorOptions = async (req, res) => {
   try {
-    const statusEnum = Task.rawAttributes.status.values;
+    const boardId = req.query.boardId;
+
+    if (!boardId) {
+      return res.status(400).json({ error: 'Se requiere boardId' });
+    }
+
+    const columns = await Column.findAll({
+      where: { boardId: boardId },
+      attributes: ['name'],
+    });
+
+    const statusOptions = columns.map(col => col.name);
     const priorityEnum = Task.rawAttributes.priority.values;
 
     return res.status(200).json({
-      status: statusEnum,
+      status: statusOptions,
       priority: priorityEnum,
     });
   } catch (error) {

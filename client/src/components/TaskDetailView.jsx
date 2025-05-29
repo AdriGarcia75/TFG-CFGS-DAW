@@ -11,7 +11,7 @@ export default function TaskDetailView({
     setStatus,
     priority,
     setPriority,
-    selectorOptions,
+    selectorOptions = { status: [], priority: [] },
     handleSave,
     handleDelete,
     onClick,
@@ -28,7 +28,6 @@ export default function TaskDetailView({
                     ✕
                 </button>
             </div>
-
             <div>
                 <label className="font-semibold block mb-1">Título:</label>
                 <input
@@ -38,7 +37,6 @@ export default function TaskDetailView({
                     className="w-full border p-2 rounded"
                 />
             </div>
-
             <div>
                 <label className="font-semibold block mb-1">Descripción:</label>
                 <textarea
@@ -48,7 +46,6 @@ export default function TaskDetailView({
                     rows={4}
                 />
             </div>
-
             <div>
                 <label className="font-semibold block mb-1">Fecha de vencimiento:</label>
                 <input
@@ -58,9 +55,8 @@ export default function TaskDetailView({
                     className="w-full border p-2 rounded"
                 />
             </div>
-
             <div>
-                <label className="font-semibold block mb-1">Estado:</label>
+                <label className="font-semibold block mb-1">Estado (Columna):</label>
                 <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
@@ -73,7 +69,6 @@ export default function TaskDetailView({
                     ))}
                 </select>
             </div>
-
             <div>
                 <label className="font-semibold block mb-1">Prioridad:</label>
                 <select

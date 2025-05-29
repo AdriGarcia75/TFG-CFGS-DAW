@@ -7,7 +7,6 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
   const [status, setStatus] = useState(task.status || '');
   const [priority, setPriority] = useState(task.priority || '');
   const [dueDate, setDueDate] = useState(task.due_date?.slice(0, 10) || '');
-
   const [selectorOptions, setOptionsSelector] = useState(null);
 
   useEffect(() => {
@@ -16,7 +15,8 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
     const fetchOptionsSelector = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:3000/api/tasks/selectorOptions', {
+        const boardId = task.boardId;
+        const res = await fetch(`http://localhost:3000/api/tasks/selectorOptions?boardId=${boardId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

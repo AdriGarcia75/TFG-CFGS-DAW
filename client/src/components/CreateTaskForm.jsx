@@ -4,18 +4,38 @@ export default function CreateTask({ onClose, onCreate, columns, boardId }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [priority, setPriority] = useState('medium');
-  const [status, setStatus] = useState('pending');
+  const [priority, setPriority] = useState('media');
+  const [status, setStatus] = useState('');
   const [columnId, setColumnId] = useState(columns[0]?.id || '');
+  const [selectorOptions, setSelectorOptions] = useState(null);
 
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
     setDueDate(today);
   }, []);
 
+  useEffect(() => {
+    const fetchOptionsSelector = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`http://localhost:3000/api/tasks/selectorOptions?boardId=${boardId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        setSelectorOptions(data);
+        if (data.status.length > 0) setStatus(data.status[0]);
+      } catch (error) {
+        console.error('Error al obtener los valores para los selectores', error);
+      }
+    };
+
+    fetchOptionsSelector();
+  }, [boardId]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     // prevent the sending of the form if any required fields are empty
     if (!title || !dueDate || !priority || !status || !columnId) return;
 
@@ -32,6 +52,7 @@ export default function CreateTask({ onClose, onCreate, columns, boardId }) {
     onClose();
   };
 
+  if (!selectorOptions) return null;
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-40 z-40" onClick={onClose} />
@@ -62,20 +83,16 @@ export default function CreateTask({ onClose, onCreate, columns, boardId }) {
           />
 
           <select value={priority} onChange={(e) => setPriority(e.target.value)} className="w-full border p-2 rounded">
-            <option value="low">Baja</option>
-            <option value="medium">Media</option>
-            <option value="high">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
           </select>
 
-          <select value={status} onChange={(e) => setStatus(e.target.value)} className="w-full border p-2 rounded">
-            <option value="pending">Pendiente</option>
-            <option value="in_progress">En progreso</option>
-            <option value="completed">Completada</option>
-          </select>
-
-          <select value={columnId} onChange={(e) => setColumnId(e.target.value)} className="w-full border p-2 rounded">
-            {columns.map(col => (
-              <option key={col.id} value={col.id}>{col.name}</option>
+          <select value={status} onChange={(e) => setStatus(e.target.value)} className="w-full border p-2 rounded capitalize">
+            {selectorOptions.status.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt.replace('_', ' ')}
+              </option>
             ))}
           </select>
 
