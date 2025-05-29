@@ -18,8 +18,14 @@ export default function ColumnComponent({
 
   const finishEditing = () => {
     setIsEditing(false);
-    if (title.trim() && title !== column.name) {
-      onColumnChange({ ...column, name: title.trim() });
+    const trimmedTitle = title.trim();
+    if (trimmedTitle && trimmedTitle !== column.name) {
+      const updatedColumn = { ...column, name: trimmedTitle };
+      onColumnChange(updatedColumn);
+      const updatedTasks = tasks.map(task => ({
+        ...task,
+        columnName: trimmedTitle
+      }));
     } else {
       setTitle(column.name); // revert if empty or no changes
     }

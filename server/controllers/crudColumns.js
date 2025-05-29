@@ -1,4 +1,4 @@
-const { Column } = require('../models');
+const { Column, Task } = require('../models');
 
 const createColumn = async (req, res) => {
   try {
@@ -55,12 +55,23 @@ const updateColumn = async (req, res) => {
       return res.status(404).json({ error: 'Columna no encontrada.' });
     }
 
+    const oldName = column.name;
+
     if (name !== undefined) column.name = name;
     if (description !== undefined) column.description = description;
     if (display_order !== undefined) column.display_order = display_order;
     if (color !== undefined) column.color = color;
 
     await column.save();
+
+    // update task status after changing column name
+    if (name && oldName !== name) {
+      await Task.update(
+        { status: name },
+        { where: { status: oldName } }
+      );
+    }
+
     return res.status(200).json(column);
   } catch (error) {
     console.error('Error al actualizar la columna', error);

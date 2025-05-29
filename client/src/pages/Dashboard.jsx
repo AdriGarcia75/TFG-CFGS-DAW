@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import DashboardView from '../components/DashboardView';
-import CreateColumnButton from '../components/CreateColumnButton';
-import CreateBoardButton from '../components/CreateBoardButton';
 
 export default function Dashboard() {
   const [columns, setColumns] = useState([]);
@@ -213,11 +211,16 @@ export default function Dashboard() {
         },
         body: JSON.stringify({ name: updatedColumn.name.trim() }),
       });
+
       if (!response.ok) throw new Error('Error al actualizar la columna');
+
       const updated = await response.json();
+
       setColumns(prev =>
         prev.map(col => (col.id === updated.id ? updated : col))
       );
+
+      handleTasksUpdateByColumn(updated.id, updated.name);
     } catch (error) {
       console.error('Error al actualizar el nombre de la columna:', error);
     }
@@ -258,6 +261,16 @@ export default function Dashboard() {
     } catch (error) {
       console.error('Error al eliminar la tarea:', error);
     }
+  };
+
+  const handleTasksUpdateByColumn = (columnId, newColumnName) => {
+    setTasks(prevTasks => {
+      const updatedTasks = prevTasks.map(task =>
+        task.columnId === columnId ? { ...task, status: newColumnName } : task
+      );
+      setTasksByColumn(groupTasksByColumn(updatedTasks));
+      return updatedTasks;
+    });
   };
 
   //drag and drop logic
@@ -325,11 +338,9 @@ export default function Dashboard() {
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
+      onCreateBoard={handleBoardCreate}
+      onCreateColumn={handleColumnCreate}
     >
-      <div className="flex space-x-4 mt-6">
-        <CreateBoardButton onCreateBoard={handleBoardCreate} />
-        <CreateColumnButton onCreateColumn={handleColumnCreate} />
-      </div>
     </DashboardView>
   );
 }
