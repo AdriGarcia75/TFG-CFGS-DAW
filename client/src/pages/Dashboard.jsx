@@ -229,6 +229,22 @@ export default function Dashboard() {
   const handleColumnDelete = async (columnId) => {
     try {
       const token = localStorage.getItem('token');
+      const tasksResponse = await fetch(`${apiUrl}/tasks?columnId=${columnId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!tasksResponse.ok) throw new Error('Error al obtener tareas de la columna');
+      const tasksToDelete = await tasksResponse.json();
+
+      for (const task of tasksToDelete) {
+        await fetch(`${apiUrl}/tasks/${task.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+
       const response = await fetch(`${apiUrl}/columns/${columnId}`, {
         method: 'DELETE',
         headers: {
