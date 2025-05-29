@@ -30,8 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     priority: {
-      type: DataTypes.ENUM('low', 'medium', 'high'),
-      defaultValue: 'medium',
+      type: DataTypes.ENUM('baja', 'media', 'alta'),
+      defaultValue: 'media',
     },
     createdAt: {
       type: DataTypes.DATE,

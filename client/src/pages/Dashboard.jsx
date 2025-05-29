@@ -226,6 +226,30 @@ export default function Dashboard() {
     }
   };
 
+  const handleColumnDelete = async (columnId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${apiUrl}/columns/${columnId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error('Error al eliminar la columna');
+
+      setColumns(prevColumns => prevColumns.filter(col => col.id !== columnId));
+      setTasks(prevTasks => {
+        const remainingTasks = prevTasks.filter(task => task.columnId !== columnId);
+        setTasksByColumn(groupTasksByColumn(remainingTasks));
+        return remainingTasks;
+      });
+    } catch (error) {
+      console.error('Error al eliminar la columna:', error);
+    }
+  };
+
   const handleTaskUpdate = (updatedTask) => {
     setTasks((prevTasks) => {
       const newTasks = prevTasks.map(task =>
@@ -335,6 +359,7 @@ export default function Dashboard() {
       onTaskCreate={handleTaskCreate}
       onTaskDelete={handleTaskDelete}
       onColumnChange={handleColumnChange}
+      onColumnDelete={handleColumnDelete}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDrop={handleDrop}

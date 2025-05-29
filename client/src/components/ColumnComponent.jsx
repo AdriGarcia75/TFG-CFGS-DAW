@@ -7,6 +7,7 @@ export default function ColumnComponent({
   onTaskSelect,
   onTaskDelete,
   onColumnChange,
+  onColumnDelete,
   onDragOver,
   onDrop,
   onDragStart
@@ -22,10 +23,6 @@ export default function ColumnComponent({
     if (trimmedTitle && trimmedTitle !== column.name) {
       const updatedColumn = { ...column, name: trimmedTitle };
       onColumnChange(updatedColumn);
-      const updatedTasks = tasks.map(task => ({
-        ...task,
-        columnName: trimmedTitle
-      }));
     } else {
       setTitle(column.name); // revert if empty or no changes
     }
@@ -49,12 +46,12 @@ export default function ColumnComponent({
   return (
     <div
       key={column.id}
-      className="w-64 flex-shrink-0 flex flex-col bg-gray-50 border-slate-900"
+      className="w-64 flex-shrink-0 flex flex-col bg-gray-50 border-slate-900 relative"
       style={{ height: '100%' }}
       onDragOver={handleDragOver}
       onDrop={(e) => onDrop(e, column.id)}
     >
-      <div className="mb-2">
+      <div className="mb-2 flex justify-between items-center">
         {isEditing ? (
           <input
             className="text-xl font-bold w-full border rounded p-1"
@@ -66,12 +63,23 @@ export default function ColumnComponent({
           />
         ) : (
           <h2
-            className="text-xl font-bold cursor-pointer"
+            className="text-xl font-bold cursor-pointer flex-1"
             onClick={handleTitleClick}
           >
             {column.name}
           </h2>
         )}
+        <button
+          className="text-red-500 hover:text-red-700 ml-2 text-lg font-bold"
+          onClick={() => {
+            if (window.confirm("¿Estás seguro de que quieres eliminar esta columna?")) {
+              onColumnDelete(column.id);
+            }
+          }}
+          title="Eliminar columna"
+        >
+          ×
+        </button>
       </div>
 
       <div className={`rounded p-4 space-y-4 flex-1 overflow-auto ${column.color || ''}`}>

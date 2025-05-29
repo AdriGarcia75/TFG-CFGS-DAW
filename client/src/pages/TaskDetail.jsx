@@ -35,7 +35,7 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
     try {
       const token = localStorage.getItem('token');
       const res = await fetch(`http://localhost:3000/api/tasks/${task.id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,

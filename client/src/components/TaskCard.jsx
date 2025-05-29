@@ -19,7 +19,7 @@ export default function TaskCard({ task, onClick, onDelete, onDragStart }) {
         }}
         aria-label="Eliminar tarea"
       >
-        ✕
+        ×
       </button>
       <h3 className="font-semibold">{task.title}</h3>
       <p className="text-sm text-gray-600">

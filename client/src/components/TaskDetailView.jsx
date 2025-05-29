@@ -56,7 +56,7 @@ export default function TaskDetailView({
                 />
             </div>
             <div>
-                <label className="font-semibold block mb-1">Estado (Columna):</label>
+                <label className="font-semibold block mb-1">Estado:</label>
                 <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
