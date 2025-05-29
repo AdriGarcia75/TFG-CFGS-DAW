@@ -5,6 +5,7 @@ import CreateTask from './CreateTaskForm';
 import CreateColumn from './CreateColumnForm';
 import CreateBoard from './CreateBoardForm';
 import ColumnComponent from './ColumnComponent';
+import DeleteBoardButton from './DeleteBoardButton';
 
 export default function DashboardView({
   columns,
@@ -25,7 +26,8 @@ export default function DashboardView({
   onDrop,
   onCreateColumn,
   onCreateBoard,
-  onColumnDelete
+  onColumnDelete,
+  onBoardDelete
 }) {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isCreateColumnModalOpen, setIsCreateColumnModalOpen] = useState(false);
@@ -55,6 +57,12 @@ export default function DashboardView({
     closeCreateBoardModal();
   };
 
+  const handleDeleteBoard = () => {
+    if (selectedBoard && window.confirm('¿Estás seguro de que deseas eliminar este tablero?')) {
+      onBoardDelete(selectedBoard);
+    }
+  };
+
   return (
     <div className="flex h-screen">
       <aside className="w-64 bg-gray-800 text-white flex flex-col p-4">
@@ -70,9 +78,12 @@ export default function DashboardView({
       <main className="flex-1 bg-gray-200 p-6 overflow-auto">
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-semibold">Dashboard</h1>
-          <CreateTaskButton onClick={openCreateTaskModal} />
+          <div className="flex gap-2">
+            <DeleteBoardButton onClick={handleDeleteBoard} />
+            <CreateTaskButton onClick={openCreateTaskModal} />
+          </div>
         </header>
-        
+
         {/* list of boards */}
         <select
           className="w-auto p-2 border rounded mb-4"
@@ -91,7 +102,7 @@ export default function DashboardView({
           <div className="flex gap-6 min-w-fit px-0 pb-4 h-[calc(100vh-100px)]">
             {columns.length === 0 ? (
               <div className="text-center w-full">
-                <p>No hay columnas disponibles. ¡Si es tu primera vez en AnyTasks, clica en crear columnas!</p>
+                <p>No hay columnas disponibles. ¡Selecciona un tablero o crea uno si no tienes!</p>
               </div>
             ) : (
               columns.map((col) => (

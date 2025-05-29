@@ -9,6 +9,7 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [tasksByColumn, setTasksByColumn] = useState({});
   const [selectedTask, setSelectedTask] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0); // to correctly reload boardlist
 
   const apiUrl = "http://localhost:3000/api";
 
@@ -89,14 +90,18 @@ export default function Dashboard() {
     }
   };
 
-  // executed on a useEffect because if its executed directly it will be executed on every render, and not only when the Dashboard is mounted
+  // use effects for the logic of reloading certain parts of the app
   useEffect(() => {
     fetchBoards();
-  }, []);
+  }, [refreshKey]);
 
   useEffect(() => {
     if (selectedBoard) {
       fetchColumns(selectedBoard);
+    } else {
+      setColumns([]);
+      setTasks([]);
+      setTasksByColumn({});
     }
   }, [selectedBoard]);
 
@@ -197,6 +202,47 @@ export default function Dashboard() {
       </div>
     );
   }
+
+  const handleBoardDelete = async (boardId) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      const columnsResponse = await fetch(`${apiUrl}/columns?boardId=${boardId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!columnsResponse.ok) throw new Error('Error al obtener columnas del tablero');
+      const columnsToDelete = await columnsResponse.json();
+
+      for (const column of columnsToDelete) {
+        await handleColumnDelete(column.id);
+      }
+
+      const deleteBoardResponse = await fetch(`${apiUrl}/boards/${boardId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!deleteBoardResponse.ok) throw new Error('Error al eliminar el tablero');
+
+      // select the first board if possible only if the selected one was selected
+      setBoards(prevBoards => {
+        const updatedBoards = prevBoards.filter(board => board.id !== boardId);
+
+        if (selectedBoard === boardId) {
+          setSelectedBoard(updatedBoards[0]?.id || null);
+        }
+
+        return updatedBoards;
+      });
+
+      setRefreshKey(prev => prev + 1); // force reload of the board list
+
+    } catch (error) {
+      console.error('Error al eliminar el tablero:', error);
+    }
+  };
 
   const handleColumnChange = async (updatedColumn) => {
     if (!updatedColumn.name.trim()) return;
@@ -381,6 +427,7 @@ export default function Dashboard() {
       onDrop={handleDrop}
       onCreateBoard={handleBoardCreate}
       onCreateColumn={handleColumnCreate}
+      onBoardDelete={handleBoardDelete}
     >
     </DashboardView>
   );
