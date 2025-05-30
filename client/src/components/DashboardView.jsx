@@ -5,6 +5,7 @@ import CreateTask from './CreateTaskForm';
 import CreateColumn from './CreateColumnForm';
 import CreateBoard from './CreateBoardForm';
 import ColumnComponent from './ColumnComponent';
+import SelectBoard from './SelectBoard';
 import DeleteBoardButton from './DeleteBoardButton';
 
 export default function DashboardView({
@@ -68,6 +69,11 @@ export default function DashboardView({
         <h2 className="text-2xl font-bold mb-6">AnyTasks</h2>
         <nav className="flex flex-col gap-4">
           <a href="#" className="hover:bg-gray-700 p-2 rounded">Dashboard</a>
+          <SelectBoard
+            boards={boards}
+            selectedBoard={selectedBoard}
+            onBoardChange={onBoardChange}
+          />
           <button onClick={openCreateBoardModal} className="hover:bg-gray-700 p-2 rounded text-left">Crear Tablero</button>
           <button onClick={openCreateColumnModal} className="hover:bg-gray-700 p-2 rounded text-left">Crear Columna</button>
           <a href="#" className="hover:bg-gray-700 p-2 rounded">Opciones</a>
@@ -82,20 +88,6 @@ export default function DashboardView({
             <CreateTaskButton onClick={openCreateTaskModal} />
           </div>
         </header>
-
-        {/* list of boards */}
-        <select
-          className="w-auto p-2 border rounded mb-4"
-          value={selectedBoard || ""}
-          onChange={(e) => onBoardChange(e.target.value)}
-        >
-          <option value="" disabled>Seleccionar tablero</option>
-          {boards.map((board) => (
-            <option key={board.id} value={board.id}>
-              {board.name}
-            </option>
-          ))}
-        </select>
 
         <div className="overflow-x-auto">
           <div className="flex gap-6 min-w-fit px-0 pb-4 h-[calc(100vh-100px)]">
