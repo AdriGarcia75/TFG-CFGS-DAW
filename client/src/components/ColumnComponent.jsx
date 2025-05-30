@@ -45,7 +45,7 @@ export default function ColumnComponent({
   return (
     <div
       key={column.id}
-      className="column-component flex flex-col bg-gray-50 border border-gray-300 rounded-lg relative"
+      className="column-component flex flex-col bg-gray-50 border border-gray-300 rounded-lg relative column"
       style={{
         flexShrink: 1,
         flexBasis: '25%',

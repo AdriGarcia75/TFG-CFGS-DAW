@@ -8,6 +8,8 @@ import ColumnComponent from './ColumnComponent';
 import SelectBoard from './SelectBoard';
 import DeleteBoardButton from './DeleteBoardButton';
 
+import "../Dashboard.css";
+
 export default function DashboardView({
   columns,
   boards,
@@ -58,17 +60,18 @@ export default function DashboardView({
   };
 
   const handleDeleteBoard = () => {
-    if (selectedBoard && window.confirm('¿Estás seguro de que deseas eliminar este tablero?')) {
+    if (selectedBoard && window.confirm('Se eliminará el tablero actual.\n¿Estás seguro de que deseas eliminar este tablero?')) {
       onBoardDelete(selectedBoard);
     }
   };
 
   return (
-    <div className="flex h-screen">
-      <aside className="w-64 bg-gray-800 text-white flex flex-col p-4">
+    <div className="dashboard-container">
+      {/* Sidebar (lateral en desktop, arriba en móvil) */}
+      <aside className="sidebar bg-gray-800 text-white flex flex-col p-4">
         <h2 className="text-2xl font-bold mb-6">AnyTasks</h2>
-        <nav className="flex flex-col gap-4">
-          <a href="#" className="hover:bg-gray-700 p-2 rounded">Dashboard</a>
+        <nav className="flex flex-col gap-4 md:flex-col md:gap-4">
+          {/* <a href="#" className="hover:bg-gray-700 p-2 rounded">Dashboard</a> */}
           <SelectBoard
             boards={boards}
             selectedBoard={selectedBoard}
@@ -80,7 +83,8 @@ export default function DashboardView({
         </nav>
       </aside>
 
-      <main className="flex-1 bg-gray-200 p-6 overflow-auto bg-gradient-to-r from-gray-50 to-gray-200">
+      {/* Main content */}
+      <main className="main-content bg-gray-200 p-6 overflow-auto bg-gradient-to-r from-gray-50 to-gray-200">
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-semibold">Dashboard</h1>
           <div className="flex gap-2">
@@ -90,7 +94,7 @@ export default function DashboardView({
         </header>
 
         <div className="overflow-x-auto">
-          <div className="flex gap-6 min-w-fit px-0 pb-4 h-[calc(100vh-100px)]">
+          <div className="columns-container">
             {columns.length === 0 ? (
               <div className="text-center w-full">
                 <p>No hay columnas disponibles. ¡Selecciona un tablero o crea uno si no tienes!</p>
@@ -114,6 +118,7 @@ export default function DashboardView({
           </div>
         </div>
       </main>
+
       {/* task detail  */}
       {selectedTask && (
         <>
