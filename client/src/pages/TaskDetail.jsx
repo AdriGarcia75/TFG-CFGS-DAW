@@ -13,32 +13,38 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
 
   useEffect(() => {
     if (selectorOptions) return;
+
     const fetchOptionsSelector = async () => {
       try {
         const token = localStorage.getItem('token');
         const boardId = task.boardId;
-        const res = await fetch(`http://localhost:3000/api/tasks/selectorOptions?boardId=${boardId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          `http://localhost:3000/api/tasks/selectorOptions?boardId=${boardId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         const data = await res.json();
         setOptionsSelector(data);
+        if (task.columnId && data.status) {
+          const statusObj = data.status.find(s => s.id === task.columnId);
+          if (statusObj) setStatus(statusObj.name);
+        }
       } catch (error) {
         console.error('Error al obtener los valores para los selectores', error);
       }
     };
+
     fetchOptionsSelector();
-  }, [selectorOptions, task.boardId]);
+  }, [selectorOptions, task.boardId, task.columnId]);
 
   const fetchAttachments = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:3000/api/tasks/${task.id}/attachments`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `http://localhost:3000/api/tasks/${task.id}/attachments`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       if (res.ok) {
         const data = await res.json();
         setAttachments(data);
@@ -51,6 +57,10 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem('token');
+
+      const selectedColumn = selectorOptions.status.find(s => s.name === status);
+      const columnIdNum = selectedColumn ? selectedColumn.id : null;
+
       const res = await fetch(`http://localhost:3000/api/tasks/${task.id}`, {
         method: 'PATCH',
         headers: {
@@ -63,6 +73,7 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
           status,
           priority,
           due_date: dueDate,
+          columnId: columnIdNum,
         }),
       });
 
@@ -78,13 +89,16 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
         const formData = new FormData();
         formData.append('attachment', file);
 
-        const uploadRes = await fetch(`http://localhost:3000/api/tasks/${task.id}/attachments`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
+        const uploadRes = await fetch(
+          `http://localhost:3000/api/tasks/${task.id}/attachments`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          }
+        );
 
         if (!uploadRes.ok) {
           const errorData = await uploadRes.json();
@@ -93,20 +107,18 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
         }
 
         setFile(null);
-        await fetchAttachments();  // refresh attachments
+        await fetchAttachments();
       }
 
       alert('Tarea actualizada correctamente');
-      onTaskUpdate(updatedTask); // update the task on board
-      onClick(); // close the taskDetail by registering a click
-
+      onTaskUpdate(updatedTask);
+      onClick();
     } catch (err) {
       console.error(err);
       alert('Error de conexión al guardar ' + err);
     }
   };
 
-  // refresh to get the new attachments
   useEffect(() => {
     fetchAttachments();
   }, [task.id]);
@@ -119,14 +131,12 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
       const token = localStorage.getItem('token');
       const res = await fetch(`http://localhost:3000/api/tasks/${task.id}`, {
         method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (res.ok) {
-        onTaskUpdate({ deleted: true, id: task.id }); // update the task on board
-        onClick(); // close the taskDetail by registering a click
+        onTaskUpdate({ deleted: true, id: task.id });
+        onClick();
       } else {
         const data = await res.json();
         alert(data.error || 'Error al eliminar la tarea');

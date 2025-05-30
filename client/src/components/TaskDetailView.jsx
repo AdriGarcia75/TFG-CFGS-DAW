@@ -16,7 +16,6 @@ export default function TaskDetailView({
   handleDelete,
   onClick,
   attachments = [],
-  file,
   setFile,
 }) {
   return (
@@ -70,8 +69,8 @@ export default function TaskDetailView({
           className="w-full border p-2 rounded capitalize"
         >
           {selectorOptions.status.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt.replace('_', ' ')}
+            <option key={opt.id} value={opt.name}>
+              {opt.name.replace('_', ' ')}
             </option>
           ))}
         </select>
@@ -101,7 +100,6 @@ export default function TaskDetailView({
         />
       </div>
 
-      {/* show attachments */}
       {attachments.length > 0 && (
         <div>
           <h3 className="font-semibold mb-1">Archivos adjuntos:</h3>
