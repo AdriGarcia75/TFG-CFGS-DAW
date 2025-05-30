@@ -91,19 +91,19 @@ export default function TaskDetailView({
         </select>
       </div>
 
-      <div>
-        <label className="font-semibold block mb-1">Adjuntar archivo:</label>
+      <div className="mb-4">
+        <label className="block font-semibold mb-2 text-gray-700">Adjuntar archivo:</label>
         <input
           type="file"
           onChange={(e) => setFile(e.target.files[0])}
-          className="mb-2"
+          className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 cursor-pointer hover:border-blue-500 transition-colors"
         />
       </div>
 
       {attachments.length > 0 && (
-        <div>
-          <h3 className="font-semibold mb-1">Archivos adjuntos:</h3>
-          <ul className="list-disc list-inside">
+        <div className="mt-4">
+          <h3 className="font-semibold text-gray-700 mb-2 border-b border-gray-300 pb-1">Archivos adjuntos:</h3>
+          <ul className="list-disc list-inside space-y-1">
             {attachments.map((att) => (
               <li key={att.id}>
                 <a

@@ -35,6 +35,16 @@ export default function Dashboard() {
       }
       const data = await response.json();
       setBoards(data);
+
+      const storedBoardId = Number(localStorage.getItem('boardSeleccionado'));
+      // if it exists and is valid, select the stored one, if not, select the first one
+      if (storedBoardId && data.some(board => board.id === storedBoardId)) {
+        setSelectedBoard(storedBoardId);
+      } else {
+        console.log(typeof data[0]?.id )
+        setSelectedBoard(data[0]?.id || null);
+      }
+
       setSelectedBoard(data[0]?.id || null);
       setLoading(false);
     } catch (error) {
@@ -193,6 +203,7 @@ export default function Dashboard() {
 
   const handleBoardChange = (boardId) => {
     setSelectedBoard(boardId);
+    localStorage.setItem('boardSeleccionado', boardId);
   };
 
   if (loading) {
@@ -359,7 +370,7 @@ export default function Dashboard() {
     });
   };
 
-  //drag and drop logic
+  // drag and drop logic
   const handleDragStart = (e, taskId) => {
     e.dataTransfer.setData('taskId', taskId);
   };
@@ -373,7 +384,7 @@ export default function Dashboard() {
     const taskId = e.dataTransfer.getData('text/plain');
     const taskIdNum = Number(taskId);
 
-    //find the target column ID
+    // find the target column ID
     const targetColumn = columns.find(col => col.id === targetColumnId);
     if (!targetColumn) return;
 

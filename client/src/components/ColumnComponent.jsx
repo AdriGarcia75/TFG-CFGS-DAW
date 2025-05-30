@@ -24,7 +24,7 @@ export default function ColumnComponent({
       const updatedColumn = { ...column, name: trimmedTitle };
       onColumnChange(updatedColumn);
     } else {
-      setTitle(column.name); // revert if empty or no changes
+      setTitle(column.name);
     }
   };
 
@@ -37,7 +37,6 @@ export default function ColumnComponent({
     }
   };
 
-  // control the drag over to intercept the changes
   const handleDragOver = (e) => {
     e.preventDefault();
     if (onDragOver) onDragOver(e);
@@ -46,12 +45,21 @@ export default function ColumnComponent({
   return (
     <div
       key={column.id}
-      className="w-64 flex-shrink-0 flex flex-col bg-gray-50 border-slate-900 relative"
-      style={{ height: '100%' }}
+      className="column-component flex flex-col bg-gray-50 border border-gray-300 rounded-lg relative"
+      style={{
+        flexShrink: 1,
+        flexBasis: '25%',
+        minWidth: '250px',
+        maxWidth: '33%',
+        maxHeight: '80vh',
+        height: '100%',
+        overflow: 'hidden',
+        boxSizing: 'border-box',
+      }}
       onDragOver={handleDragOver}
       onDrop={(e) => onDrop(e, column.id)}
     >
-      <div className="mb-2 flex justify-between items-center">
+      <div className="mb-2 flex justify-between items-center px-4 py-2">
         {isEditing ? (
           <input
             className="text-xl font-bold w-full border rounded p-1"
@@ -82,7 +90,10 @@ export default function ColumnComponent({
         </button>
       </div>
 
-      <div className={`rounded p-4 space-y-4 flex-1 overflow-auto ${column.color || ''}`}>
+      <div
+        className={`rounded p-4 space-y-4 flex-1 overflow-y-auto ${column.color || ''}`}
+        style={{ maxHeight: 'calc(80vh - 64px)' }}
+      >
         {tasks.length === 0 ? (
           <p className="text-gray-500">No hay tareas en esta columna.</p>
         ) : (

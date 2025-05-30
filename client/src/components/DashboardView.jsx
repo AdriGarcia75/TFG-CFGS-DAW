@@ -76,11 +76,11 @@ export default function DashboardView({
           />
           <button onClick={openCreateBoardModal} className="hover:bg-gray-700 p-2 rounded text-left">Crear Tablero</button>
           <button onClick={openCreateColumnModal} className="hover:bg-gray-700 p-2 rounded text-left">Crear Columna</button>
-          <a href="#" className="hover:bg-gray-700 p-2 rounded">Opciones</a>
+          <a href="#" className="hover:bg-gray-700 p-2 rounded">Perfil</a>
         </nav>
       </aside>
 
-      <main className="flex-1 bg-gray-200 p-6 overflow-auto">
+      <main className="flex-1 bg-gray-200 p-6 overflow-auto bg-gradient-to-r from-gray-50 to-gray-200">
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-semibold">Dashboard</h1>
           <div className="flex gap-2">
