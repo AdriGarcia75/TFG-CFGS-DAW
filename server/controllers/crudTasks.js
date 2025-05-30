@@ -1,4 +1,5 @@
-const { Task, Column } = require('../models');
+const { Task, Column, Attachment } = require('../models');
+// const path = require('path');
 
 const createTask = async (req, res) => {
   try {
@@ -37,6 +38,7 @@ const createTask = async (req, res) => {
   }
 };
 
+// unused currently
 const getTasksByBoard = async (req, res) => {
   try {
     const { boardId } = req.query;
@@ -67,17 +69,25 @@ const getTasksByColumn = async (req, res) => {
 
     let tasks;
 
+    const includeAttachments = {
+      model: Attachment,
+      as: 'attachments',
+      attributes: ['id', 'file_path', 'createdAt']
+    };
+
     if (columnIds) {
       // convert the columns ids to a proper array
       const idsArray = columnIds.split(',').map(id => Number(id));
       tasks = await Task.findAll({
         where: { columnId: idsArray },
-        order: [['display_order', 'ASC']]
+        order: [['display_order', 'ASC']],
+        include: [includeAttachments]
       });
     } else {
       tasks = await Task.findAll({
-        where: { columnId: columnId },
-        order: [['display_order', 'ASC']]
+        where: { columnId },
+        order: [['display_order', 'ASC']],
+        include: [includeAttachments]
       });
     }
 
@@ -98,10 +108,10 @@ const getSelectorOptions = async (req, res) => {
 
     const columns = await Column.findAll({
       where: { boardId: boardId },
-      attributes: ['name'],
+      attributes: ['id', 'name'],
     });
 
-    const statusOptions = columns.map(col => col.name);
+    const statusOptions = columns.map(col => ({ id: col.id, name: col.name }));
     const priorityEnum = Task.rawAttributes.priority.values;
 
     return res.status(200).json({
@@ -151,6 +161,65 @@ const deleteTask = async (req, res) => {
   }
 };
 
+const uploadAttachment = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const { taskId } = req.params;
+    const filePath = `/uploads/attachments/${taskId}/${req.file.filename}`;
+
+    // save filepath in db
+    const newAttachment = await Attachment.create({
+      file_path: filePath,
+      taskId: taskId
+    });
+
+    return res.status(201).json({
+      message: 'Archivo subido y registrado en BD',
+      attachment: newAttachment
+    });
+  } catch (error) {
+    console.error('Error al subir attachment:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const getAttachmentsByTask = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+
+    const attachments = await Attachment.findAll({
+      where: { taskId },
+      attributes: ['id', 'file_path', 'createdAt'],
+    });
+
+    return res.status(200).json(attachments);
+  } catch (error) {
+    console.error('Error al obtener archivos adjuntos:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const deleteAttachment = async (req, res) => {
+  try {
+    const { attachmentId } = req.params;
+
+    const attachment = await Attachment.findByPk(attachmentId);
+    if (!attachment) {
+      return res.status(404).json({ error: 'Archivo adjunto no encontrado.' });
+    }
+
+    await attachment.destroy();
+
+    return res.status(200).json({ message: 'Archivo adjunto eliminado correctamente.' });
+  } catch (error) {
+    console.error('Error al eliminar el archivo adjunto:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
   createTask,
   getTasksByBoard,
@@ -158,4 +227,7 @@ module.exports = {
   getSelectorOptions,
   updateTask,
   deleteTask,
+  uploadAttachment,
+  getAttachmentsByTask,
+  deleteAttachment,
 };

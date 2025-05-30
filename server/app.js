@@ -5,9 +5,9 @@ const { join } = require('path');
 const { sequelize } = require('./models/index.js');
 const authMiddleware = require('./middlewares/auth.js');
 const authRoutes = require('./routes/authRoutes.js');
-const columnsRoutes = require('./routes/columns.js');
-const boardsRoutes = require('./routes/boards.js');
-const tasksRoutes = require('./routes/tasks.js');
+const columnsRoutes = require('./routes/columnsRoutes.js');
+const boardsRoutes = require('./routes/boardsRoutes.js');
+const tasksRoutes = require('./routes/tasksRoutes.js');
 
 const app = express();
 
@@ -15,12 +15,11 @@ const PORT = 3000;
 // default port for backend connections, if changed, check all front-ends references to match the value here
 const FRONTEND_PORT = 8080;
 
-const attachmentsPath = join(__dirname, 'attachments');
+const uploadsAttachmentsPath = join(__dirname, 'uploads', 'attachments');
 
-// this checks if it exists an attachments folder (used to save all the files attached to any task)
-if (!existsSync(attachmentsPath)) {
-	mkdirSync(attachmentsPath, { recursive: true });
-	console.log('La carpeta "attachments/" en "./server/" ha sido creada');
+if (!existsSync(uploadsAttachmentsPath)) {
+    mkdirSync(uploadsAttachmentsPath, { recursive: true });
+    console.log('La carpeta "uploads/attachments/" ha sido creada');
 }
 
 // middlewares
@@ -32,7 +31,7 @@ app.use(express.static(join(__dirname, 'landing')));
 app.use('/api/auth', authRoutes);
 
 app.get('/test', (req, res) => {
-	res.json({ message: 'test' });
+    res.json({ message: 'test' });
 });
 
 // protected routes
@@ -41,7 +40,7 @@ app.use('/api/boards', authMiddleware, boardsRoutes);
 app.use('/api/tasks', authMiddleware, tasksRoutes);
 
 app.get('/api/test', authMiddleware, (req, res) => {
-	res.json({ message: 'protected test' });
+    res.json({ message: 'protected test' });
 });
 
 // start only after establishing connection with DB

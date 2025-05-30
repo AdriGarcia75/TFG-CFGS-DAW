@@ -73,6 +73,8 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE',
     });
+
+    Task.hasMany(models.Attachment, { foreignKey: 'taskId', as: 'attachments' });
   };
 
   return Task;

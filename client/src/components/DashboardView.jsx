@@ -12,7 +12,6 @@ export default function DashboardView({
   boards,
   selectedBoard,
   onBoardChange,
-  children,
   getTasksForColumn,
   selectedTask,
   onTaskSelect,

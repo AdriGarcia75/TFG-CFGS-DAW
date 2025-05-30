@@ -40,6 +40,13 @@ for (const file of readdirSync(__dirname)) {
 	}
 }
 
+// include the associations
+Object.values(db).forEach(model => {
+  if (model.associate) {
+    model.associate(db);
+  }
+});
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
