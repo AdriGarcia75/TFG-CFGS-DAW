@@ -8,7 +8,7 @@ import ColumnComponent from './ColumnComponent';
 import SelectBoard from './SelectBoard';
 import DeleteBoardButton from './DeleteBoardButton';
 
-import "../Dashboard.css";
+import "../main.css";
 
 export default function DashboardView({
   columns,
@@ -68,35 +68,40 @@ export default function DashboardView({
   return (
     <div className="dashboard-container">
       {/* Sidebar (lateral en desktop, arriba en móvil) */}
-      <aside className="sidebar bg-gray-800 text-white flex flex-col p-4">
-        <h2 className="text-2xl font-bold mb-6">AnyTasks</h2>
-        <nav className="flex flex-col gap-4 md:flex-col md:gap-4">
-          {/* <a href="#" className="hover:bg-gray-700 p-2 rounded">Dashboard</a> */}
+      <aside className="sidebar bg-gray-950 text-white flex flex-col p-4 gap-4 shadow-lg">
+        <h2 className="text-2xl font-extrabold mb-4 tracking-tight">AnyTasks</h2>
+        <nav className="flex flex-col gap-2">
           <SelectBoard
             boards={boards}
             selectedBoard={selectedBoard}
             onBoardChange={onBoardChange}
           />
-          <button onClick={openCreateBoardModal} className="hover:bg-gray-700 p-2 rounded text-left">Crear Tablero</button>
-          <button onClick={openCreateColumnModal} className="hover:bg-gray-700 p-2 rounded text-left">Crear Columna</button>
-          <a href="#" className="hover:bg-gray-700 p-2 rounded">Perfil</a>
+          <button onClick={openCreateBoardModal} className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Crear Tablero</button>
+          <button onClick={openCreateColumnModal} className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Crear Columna</button>
+          <button className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Perfil</button>
         </nav>
       </aside>
 
       {/* Main content */}
-      <main className="main-content bg-gray-200 p-6 overflow-auto bg-gradient-to-r from-gray-50 to-gray-200">
+      <main className="main-content bg-gradient-to-t sm:bg-gradient-to-l from-gray-900 via-gray-700 to-gray-100 p-6 overflow-auto min-h-screen">
         <header className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-semibold">Dashboard</h1>
+          <h1 className="text-3xl font-bold text-black tracking-wide">Dashboard</h1>
           <div className="flex gap-2">
-            <DeleteBoardButton onClick={handleDeleteBoard} />
-            <CreateTaskButton onClick={openCreateTaskModal} />
+            <DeleteBoardButton
+              onClick={handleDeleteBoard}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md transition"
+            />
+            <CreateTaskButton
+              onClick={openCreateTaskModal}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition"
+            />
           </div>
         </header>
 
         <div className="overflow-x-auto">
-          <div className="columns-container">
+          <div className="columns-container flex gap-6">
             {columns.length === 0 ? (
-              <div className="text-center w-full">
+              <div className="text-center w-full text-white">
                 <p>No hay columnas disponibles. ¡Selecciona un tablero o crea uno si no tienes!</p>
               </div>
             ) : (
@@ -124,7 +129,7 @@ export default function DashboardView({
         <>
           {/* black overlay for styling */}
           <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onTaskClose} />
-          <div className="fixed top-1/2 left-1/2 w-96 max-w-full bg-white rounded-lg shadow-xl z-50 p-6 transform -translate-x-1/2 -translate-y-1/2 overflow-auto max-h-[80vh]">
+          <div className="fixed top-1/2 left-1/2 w-96 max-w-full bg-white rounded-2xl shadow-2xl z-50 p-6 transform -translate-x-1/2 -translate-y-1/2 overflow-auto max-h-[80vh]">
             <TaskDetail
               task={selectedTask}
               onClick={onTaskClose}
@@ -135,6 +140,7 @@ export default function DashboardView({
         </>
       )}
 
+      {/* create task */}
       {isCreateTaskModalOpen && (
         <CreateTask
           onClose={closeCreateTaskModal}
@@ -144,6 +150,7 @@ export default function DashboardView({
         />
       )}
 
+      {/* create column */}
       {isCreateColumnModalOpen && (
         <CreateColumn
           onClose={closeCreateColumnModal}
@@ -151,6 +158,7 @@ export default function DashboardView({
         />
       )}
 
+      {/* create board */}
       {isCreateBoardModalOpen && (
         <CreateBoard
           onClose={closeCreateBoardModal}

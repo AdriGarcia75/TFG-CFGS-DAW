@@ -45,17 +45,7 @@ export default function ColumnComponent({
   return (
     <div
       key={column.id}
-      className="column-component flex flex-col bg-gray-50 border border-gray-300 rounded-lg relative column"
-      style={{
-        flexShrink: 1,
-        flexBasis: '25%',
-        minWidth: '250px',
-        maxWidth: '33%',
-        maxHeight: '80vh',
-        height: '100%',
-        overflow: 'hidden',
-        boxSizing: 'border-box',
-      }}
+      className="column-component column-tasks"
       onDragOver={handleDragOver}
       onDrop={(e) => onDrop(e, column.id)}
     >

@@ -100,7 +100,7 @@ export default function Dashboard() {
     }
   };
 
-  // use effects for the logic of reloading certain parts of the app
+  // handles the load and reload of boards, columns and tasks 
   useEffect(() => {
     fetchBoards();
   }, [refreshKey]);

@@ -1,3 +1,4 @@
+/* DESKTOP STYLING */
 .dashboard-container {
   display: flex;
   height: 100vh;
@@ -8,17 +9,22 @@
   width: 16rem;
   flex-shrink: 0;
   overflow-y: auto;
-  
+
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .main-content {
   flex: 1;
   overflow-y: auto;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  height: auto;
+  max-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .columns-container {
@@ -28,6 +34,25 @@
   overflow-x: auto;
   min-width: fit-content;
   height: calc(100vh - 100px);
+  align-items: flex-start;
+}
+
+.column-tasks {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 1;
+  flex-basis: 25%;
+  min-width: 250px;
+  min-height: 300px;
+  max-width: 33%;
+  max-height: 80vh;
+  height: auto;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
 }
 
 .column {
@@ -57,7 +82,6 @@
 }
 
 /* MOBILE STYLING */
-
 @media (max-width: 768px) {
   .dashboard-container {
     flex-direction: column;
@@ -68,41 +92,37 @@
     width: 100%;
     height: auto;
     flex-shrink: 0;
-    padding-bottom: 0.5rem;
+    padding-bottom: 1rem;
     flex-direction: column;
-    align-items: center;    
+    align-items: center;
     overflow-x: visible;
     white-space: normal;
-    text-align: center;     
+    text-align: center;
   }
 
   .sidebar nav {
     display: flex;
-    flex-direction: column;  
+    flex-direction: column;
     gap: 12px;
     width: 100%;
-    max-width: 400px;       
+    max-width: 400px;
   }
 
-  .sidebar nav a,
   .sidebar nav button {
     white-space: normal;
     display: block;
-    width: 100%;            
-    text-align: center;     
+    width: 100%;
+    text-align: center;
   }
 
   .main-content {
     height: auto;
     padding: 1rem 1rem 2rem 1rem;
-
-    
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  
   .main-content > header {
     display: flex;
     flex-direction: column;
@@ -110,10 +130,9 @@
     gap: 1rem;
     margin-bottom: 1.5rem;
     width: 100%;
-    max-width: 600px; 
+    max-width: 600px;
   }
 
-  
   .main-content > header > div {
     display: flex;
     gap: 1rem;
@@ -125,8 +144,8 @@
     flex-direction: column;
     gap: 12px;
     overflow-x: hidden;
-    height: auto /* !important */;
-    min-width: 0 /* !important */;
+    height: auto !important;
+    min-width: 0 !important;
     align-items: center;
     justify-content: center;
     width: 100%;
