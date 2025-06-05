@@ -26,8 +26,8 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, enf
 ### Tablas / modelos:
 
 - **Users**: Información de usuarios como nombre, correo y contraseña.
-- -**Boards** Tablero principal la cual contendrá las columnas y las tareas.
-- -**Columns** Columnas que representan el estado de las tareas que contienen, estas estarán asociadas a un tablero.
+- **Boards** Tablero principal la cual contendrá las columnas y las tareas.
+- **Columns** Columnas que representan el estado de las tareas que contienen, estas estarán asociadas a un tablero.
 - **Tasks**: Tareas con título, descripción, vencimiento, estado, prioridad y usuario asociado.
 - **Tags**: Etiquetas libres para clasificar tareas de forma flexible.
 - **\*Task_Tags**: Relación muchos a muchos entre tareas y etiquetas.
