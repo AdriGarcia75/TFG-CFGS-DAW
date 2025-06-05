@@ -9,13 +9,10 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, enf
 ## Características
 
 - 📝 **Gestión de tareas**: Crea, edita y elimina tareas.
-- 🗂️ **Clasificación de tareas**: Organiza las tareas en categorías y asigna etiquetas personalizadas.
+- 🗂️ **Clasificación de tareas**: Organiza las tareas cambiandolas de columna y asignales etiquetas personalizadas.
 - 🚦 **Estado de tareas**: Cada tarea puede tener un estado como "Pendiente", "En progreso" o "Hecho".
 - 🔥 **Prioridades**: Asigna prioridades a las tareas (Baja, Media, Alta).
-- 💬 **Comentarios**: Los usuarios pueden agregar comentarios a las tareas.
 - 📎 **Archivos adjuntos**: Permite adjuntar archivos a las tareas.
-- 📜 **Historial de cambios**: Un registro de los cambios realizados en cada tarea, como cambios de estado o prioridad.
-- 🔁 **Tareas recurrentes**: Puedes configurar tareas que se repiten de forma diaria, semanal o mensual.
 
 ## Tecnologías Utilizadas
 
