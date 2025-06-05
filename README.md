@@ -29,16 +29,12 @@ La idea es ofrecer una alternativa práctica, clara y visualmente atractiva, enf
 ### Tablas / modelos:
 
 - **Users**: Información de usuarios como nombre, correo y contraseña.
+- -**Boards** Tablero principal la cual contendrá las columnas y las tareas.
+- -**Columns** Columnas que representan el estado de las tareas que contienen, estas estarán asociadas a un tablero.
 - **Tasks**: Tareas con título, descripción, vencimiento, estado, prioridad y usuario asociado.
-- **Projects**: Proyectos con nombre y descripción.
-- **\*Task_Projects**: Relación muchos a muchos entre tareas y proyectos.
-- **Categories**: Categorías de tareas con nombre y descripción.
-- **\*Task_Categories**: Relación muchos a muchos entre tareas y categorías.
 - **Tags**: Etiquetas libres para clasificar tareas de forma flexible.
 - **\*Task_Tags**: Relación muchos a muchos entre tareas y etiquetas.
-- **Comments**: Comentarios de usuarios asociados a tareas.
 - **Attachments**: Archivos adjuntos relacionados a tareas.
-- **Task_History**: Historial de cambios de estado, prioridad y más en tareas.
 
 ### Diagrama completo de la Base de Datos:
 
