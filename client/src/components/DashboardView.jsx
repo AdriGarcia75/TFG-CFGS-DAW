@@ -7,6 +7,7 @@ import CreateBoard from './CreateBoardForm';
 import ColumnComponent from './ColumnComponent';
 import SelectBoard from './SelectBoard';
 import DeleteBoardButton from './DeleteBoardButton';
+import CreateTag from './CreateTagForm';
 
 import "../main.css";
 
@@ -29,11 +30,13 @@ export default function DashboardView({
   onCreateColumn,
   onCreateBoard,
   onColumnDelete,
-  onBoardDelete
+  onBoardDelete,
+  onCreateTag
 }) {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isCreateColumnModalOpen, setIsCreateColumnModalOpen] = useState(false);
   const [isCreateBoardModalOpen, setIsCreateBoardModalOpen] = useState(false);
+  const [isCreateTagModalOpen, setIsCreateTagModalOpen] = useState(false);
 
   const openCreateTaskModal = () => setIsCreateTaskModalOpen(true);
   const closeCreateTaskModal = () => setIsCreateTaskModalOpen(false);
@@ -43,6 +46,9 @@ export default function DashboardView({
 
   const openCreateBoardModal = () => setIsCreateBoardModalOpen(true);
   const closeCreateBoardModal = () => setIsCreateBoardModalOpen(false);
+
+  const openCreateTagModal = () => setIsCreateTagModalOpen(true);
+  const closeCreateTagModal = () => setIsCreateTagModalOpen(false);
 
   const handleCreateTask = (taskData) => {
     onTaskCreate(taskData);
@@ -57,6 +63,11 @@ export default function DashboardView({
   const handleCreateBoard = (boardData) => {
     onCreateBoard(boardData);
     closeCreateBoardModal();
+  };
+
+  const handleCreateTag = (boardData) => {
+    onCreateTag(boardData);
+    closeCreateTagModal();
   };
 
   const handleDeleteBoard = () => {
@@ -78,6 +89,7 @@ export default function DashboardView({
           />
           <button onClick={openCreateBoardModal} className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Crear Tablero</button>
           <button onClick={openCreateColumnModal} className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Crear Columna</button>
+          <button onClick={openCreateTagModal} className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Crear Tag</button>
           <button className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Perfil</button>
         </nav>
       </aside>
@@ -163,6 +175,14 @@ export default function DashboardView({
         <CreateBoard
           onClose={closeCreateBoardModal}
           onCreate={handleCreateBoard}
+        />
+      )}
+
+      {/* create tag */}
+      {isCreateTagModalOpen && (
+        <CreateTag
+          onClose={closeCreateTagModal}
+          onCreate={handleCreateTag}
         />
       )}
     </div>

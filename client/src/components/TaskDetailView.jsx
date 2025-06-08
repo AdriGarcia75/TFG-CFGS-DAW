@@ -1,4 +1,5 @@
 import React from 'react';
+import TagBadge from './TagBadge';
 
 export default function TaskDetailView({
   title,
@@ -17,7 +18,18 @@ export default function TaskDetailView({
   onClick,
   attachments = [],
   setFile,
+  tags = [],
+  setTags,
+  allTags = [],
 }) {
+  const toggleTag = (tagId) => {
+    if (tags.includes(tagId)) {
+      setTags(tags.filter(id => id !== tagId));
+    } else {
+      setTags([...tags, tagId]);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -91,6 +103,39 @@ export default function TaskDetailView({
         </select>
       </div>
 
+      <div>
+        <label className="font-semibold block mb-1">Etiquetas:</label>
+        <div className="mb-2 flex flex-wrap gap-2">
+          {tags.length === 0 && <p className="text-gray-500">No hay etiquetas seleccionadas.</p>}
+          {tags.map((tagId) => {
+            const tag = allTags.find(t => t.id === tagId);
+            return tag ? <TagBadge key={tag.id} tag={tag} /> : null;
+          })}
+        </div>
+        <div className="max-h-40 overflow-auto border p-2 rounded bg-white">
+          {allTags.map((tag) => (
+            <label
+              key={tag.id}
+              className="inline-flex items-center mr-4 mb-2 cursor-pointer select-none"
+            >
+              <input
+                type="checkbox"
+                checked={tags.some(id => Number(id) === Number(tag.id))}
+                onChange={() => toggleTag(tag.id)}
+                style={{
+                  accentColor: tag.color,
+                  width: '18px',
+                  height: '18px',
+                  cursor: 'pointer',
+                }}
+                className="mr-2"
+              />
+              <TagBadge tag={tag} />
+            </label>
+          ))}
+        </div>
+      </div>
+
       <div className="mb-4">
         <label className="block font-semibold mb-2 text-gray-700">Adjuntar archivo:</label>
         <input
@@ -102,7 +147,9 @@ export default function TaskDetailView({
 
       {attachments.length > 0 && (
         <div className="mt-4">
-          <h3 className="font-semibold text-gray-700 mb-2 border-b border-gray-300 pb-1">Archivos adjuntos:</h3>
+          <h3 className="font-semibold text-gray-700 mb-2 border-b border-gray-300 pb-1">
+            Archivos adjuntos:
+          </h3>
           <ul className="list-disc list-inside space-y-1">
             {attachments.map((att) => (
               <li key={att.id}>

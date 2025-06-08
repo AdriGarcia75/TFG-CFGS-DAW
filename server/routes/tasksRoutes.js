@@ -5,7 +5,6 @@ const taskAttachments = require('../middlewares/taskAttachments'); // middleware
 
 const {
   createTask,
-  getTasksByBoard,
   getTasksByColumn,
   getSelectorOptions,
   updateTask,
@@ -17,17 +16,13 @@ const {
 
 router.post('/', createTask);
 router.get('/', getTasksByColumn);
-router.delete('/', deleteTask);
-router.get('/by-board', getTasksByBoard);
 router.get('/selectorOptions', getSelectorOptions);
 router.patch('/:taskId', updateTask);
 router.delete('/:taskId', deleteTask);
 router.get('/:taskId/attachments', getAttachmentsByTask);
 router.delete('/attachments/:attachmentId', deleteAttachment);
 
-
-// these routes use the taskAttachments middleware
+// this route use the taskAttachments middleware
 router.post('/:taskId/attachments', taskAttachments.single('attachment'), uploadAttachment);
-
 
 module.exports = router;

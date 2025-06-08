@@ -1,5 +1,5 @@
-const { Task, Column, Attachment } = require('../models');
-// const path = require('path');
+const { Task, Column, Attachment, Tag } = require('../models');
+const { Op } = require('sequelize');
 
 const createTask = async (req, res) => {
   try {
@@ -33,28 +33,6 @@ const createTask = async (req, res) => {
 
     return res.status(201).json(newTask);
   } catch (error) {
-    console.error('Error al crear la tarea:', error);
-    return res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-// unused currently
-const getTasksByBoard = async (req, res) => {
-  try {
-    const { boardId } = req.query;
-
-    if (!boardId) {
-      return res.status(400).json({ error: 'Se necesita la ID del tablero.' });
-    }
-
-    const tasks = await Task.findAll({
-      where: { boardId },
-      order: [['display_order', 'ASC']]
-    });
-
-    return res.status(200).json(tasks);
-  } catch (error) {
-    console.error('Error al obtener tareas del tablero:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -67,33 +45,40 @@ const getTasksByColumn = async (req, res) => {
       return res.status(400).json({ error: 'Se necesitan las IDs de las columnas' });
     }
 
-    let tasks;
-
     const includeAttachments = {
       model: Attachment,
       as: 'attachments',
       attributes: ['id', 'file_path', 'createdAt']
     };
 
+    const includeTags = {
+      model: Tag,
+      as: 'Tags',
+      attributes: ['id', 'name', 'color'],
+      through: { attributes: [] }
+    };
+
+    let tasks;
+
     if (columnIds) {
       // convert the columns ids to a proper array
       const idsArray = columnIds.split(',').map(id => Number(id));
       tasks = await Task.findAll({
-        where: { columnId: idsArray },
+        where: { columnId: { [Op.in]: idsArray } },
         order: [['display_order', 'ASC']],
-        include: [includeAttachments]
+        include: [includeAttachments, includeTags]
       });
     } else {
       tasks = await Task.findAll({
-        where: { columnId },
+        where: { columnId: columnId },
         order: [['display_order', 'ASC']],
-        include: [includeAttachments]
+        include: [includeAttachments, includeTags]
       });
     }
 
     return res.status(200).json(tasks);
   } catch (error) {
-    console.error('Error al obtener las tareas de las columna(s):', error);
+    console.error(error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -119,7 +104,6 @@ const getSelectorOptions = async (req, res) => {
       priority: priorityEnum,
     });
   } catch (error) {
-    console.error('Error al obtener opciones de los selectores:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -129,20 +113,43 @@ const updateTask = async (req, res) => {
     const { taskId } = req.params;
     const updates = req.body;
 
-    const task = await Task.findByPk(taskId);
+    const task = await Task.findByPk(taskId, {
+      include: [{ model: Tag, as: 'Tags' }]
+    });
+
     if (!task) {
       return res.status(404).json({ error: 'Tarea no encontrada.' });
     }
 
-    Object.assign(task, updates);
+    const allowedFields = ['title', 'description', 'due_date', 'status', 'priority', 'columnId', 'display_order'];
+    allowedFields.forEach(field => {
+      if (updates[field] !== undefined) {
+        task[field] = updates[field];
+      }
+    });
+
     await task.save();
 
-    return res.status(200).json(task);
+    if (Array.isArray(updates.tagIds)) {
+      await task.setTags(updates.tagIds);
+    }
+
+    const updatedTask = await Task.findByPk(taskId, {
+      include: [{
+        model: Tag,
+        as: 'Tags',
+        attributes: ['id', 'name', 'color'],
+        through: { attributes: [] }
+      }]
+    });
+
+    return res.status(200).json(updatedTask);
   } catch (error) {
     console.error('Error al actualizar la tarea:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 const deleteTask = async (req, res) => {
   try {
@@ -156,7 +163,6 @@ const deleteTask = async (req, res) => {
     await task.destroy();
     return res.status(200).json({ message: 'Tarea eliminada correctamente.' });
   } catch (error) {
-    console.error('Error al eliminar la tarea:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -181,7 +187,6 @@ const uploadAttachment = async (req, res) => {
       attachment: newAttachment
     });
   } catch (error) {
-    console.error('Error al subir attachment:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -197,7 +202,6 @@ const getAttachmentsByTask = async (req, res) => {
 
     return res.status(200).json(attachments);
   } catch (error) {
-    console.error('Error al obtener archivos adjuntos:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -215,14 +219,12 @@ const deleteAttachment = async (req, res) => {
 
     return res.status(200).json({ message: 'Archivo adjunto eliminado correctamente.' });
   } catch (error) {
-    console.error('Error al eliminar el archivo adjunto:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
 module.exports = {
   createTask,
-  getTasksByBoard,
   getTasksByColumn,
   getSelectorOptions,
   updateTask,

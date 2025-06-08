@@ -15,6 +15,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
     },
+    color: {
+      type: DataTypes.STRING(7),
+      allowNull: false,
+      defaultValue: '#000000',
+      // add a validate norm to validate if the value to be entered is a correct hexadecimal value
+      validate: {
+        is: /^#([0-9A-Fa-f]{6})$/,
+      },
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: Sequelize.NOW,
@@ -27,9 +36,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Tag.associate = function (models) {
     Tag.belongsToMany(models.Task, {
-      through: 'task_tags',
+      through: models.task_tags,
       foreignKey: 'tagId',
       otherKey: 'taskId',
+      as: 'Tasks',
+      timestamps: false
     });
   };
 

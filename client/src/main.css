@@ -44,7 +44,7 @@
   flex-shrink: 1;
   flex-basis: 25%;
   min-width: 250px;
-  min-height: 300px;
+  min-height: 15%;
   max-width: 33%;
   max-height: 80vh;
   height: auto;

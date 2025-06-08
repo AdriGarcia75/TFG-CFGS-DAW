@@ -41,11 +41,9 @@ export default function Dashboard() {
       if (storedBoardId && data.some(board => board.id === storedBoardId)) {
         setSelectedBoard(storedBoardId);
       } else {
-        console.log(typeof data[0]?.id )
         setSelectedBoard(data[0]?.id || null);
       }
 
-      setSelectedBoard(data[0]?.id || null);
       setLoading(false);
     } catch (error) {
       console.error('Error al cargar los tableros:', error);
@@ -165,6 +163,32 @@ export default function Dashboard() {
       } catch (error) {
         console.error('Error al crear la columna:', error);
       }
+    }
+  };
+
+  const handleTagCreate = async (tagName) => {
+    if (!tagName.trim()) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${apiUrl}/tags`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name: tagName }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al crear la tag');
+      }
+
+      const newTag = await response.json();
+      alert(`Tag ${tagName} creada correctamente.`)
+
+    } catch (error) {
+      console.error('Error al crear la tag:', error);
     }
   };
 
@@ -439,6 +463,7 @@ export default function Dashboard() {
       onCreateBoard={handleBoardCreate}
       onCreateColumn={handleColumnCreate}
       onBoardDelete={handleBoardDelete}
+      onCreateTag={handleTagCreate}
     >
     </DashboardView>
   );

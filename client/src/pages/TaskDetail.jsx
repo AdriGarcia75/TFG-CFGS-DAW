@@ -10,6 +10,8 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
   const [selectorOptions, setOptionsSelector] = useState(null);
   const [file, setFile] = useState(null);
   const [attachments, setAttachments] = useState(task.attachments || []);
+  const [tags, setTags] = useState(task.tags?.map(t => t.id) || []);
+  const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
     if (selectorOptions) return;
@@ -37,6 +39,24 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
 
     fetchOptionsSelector();
   }, [selectorOptions, task.boardId, task.columnId]);
+
+  useEffect(() => {
+    const fetchAllTags = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch('http://localhost:3000/api/tags', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setAllTags(data);
+        }
+      } catch (err) {
+        console.error('Error fetching tags:', err);
+      }
+    };
+    fetchAllTags();
+  }, []);
 
   const fetchAttachments = async () => {
     try {
@@ -74,6 +94,7 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
           priority,
           due_date: dueDate,
           columnId: columnIdNum,
+          tagIds: tags,
         }),
       });
 
@@ -168,6 +189,9 @@ export default function TaskDetail({ task, onClick, onTaskUpdate }) {
       attachments={attachments}
       file={file}
       setFile={setFile}
+      tags={tags}
+      setTags={setTags}
+      allTags={allTags}
     />
   );
 }

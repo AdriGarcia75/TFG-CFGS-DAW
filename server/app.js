@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoutes.js');
 const columnsRoutes = require('./routes/columnsRoutes.js');
 const boardsRoutes = require('./routes/boardsRoutes.js');
 const tasksRoutes = require('./routes/tasksRoutes.js');
+const tagsRoutes = require('./routes/tagsRoutes.js');
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.get('/test', (req, res) => {
 app.use('/api/columns', authMiddleware, columnsRoutes);
 app.use('/api/boards', authMiddleware, boardsRoutes);
 app.use('/api/tasks', authMiddleware, tasksRoutes);
+app.use('/api/tags', authMiddleware, tagsRoutes);
 
 app.get('/api/test', authMiddleware, (req, res) => {
     res.json({ message: 'protected test' });
@@ -45,6 +47,10 @@ app.get('/api/test', authMiddleware, (req, res) => {
 
 // start only after establishing connection with DB
 sequelize.authenticate()
+    .then(() => {
+        // sequelize.sync to create the task-tag relational table
+        return sequelize.sync({ alter: true });
+    })
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Servidor ejecutandose en http://localhost:${PORT}, ejecuta npm start en /client para utilizar AnyTasks`);
@@ -55,3 +61,6 @@ sequelize.authenticate()
         // terminate the node process
         process.exit(1);
     });
+
+
+
