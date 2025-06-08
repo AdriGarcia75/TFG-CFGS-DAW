@@ -42,9 +42,6 @@ for (const file of readdirSync(__dirname)) {
   }
 }
 
-const TaskTags = require('./task_tags')(sequelize, DataTypes);
-db.task_tags = TaskTags;
-
 // include the associations
 Object.values(db).forEach(model => {
   if (model.associate) {

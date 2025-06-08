@@ -36,11 +36,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Tag.associate = function (models) {
     Tag.belongsToMany(models.Task, {
-      through: models.task_tags,
+      through: 'task_tags',
       foreignKey: 'tagId',
       otherKey: 'taskId',
       as: 'Tasks',
-      timestamps: false
+      timestamps: false,
     });
   };
 

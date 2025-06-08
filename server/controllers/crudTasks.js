@@ -113,25 +113,24 @@ const updateTask = async (req, res) => {
     const { taskId } = req.params;
     const updates = req.body;
 
-    const task = await Task.findByPk(taskId, {
-      include: [{ model: Tag, as: 'Tags' }]
-    });
-
-    if (!task) {
-      return res.status(404).json({ error: 'Tarea no encontrada.' });
+    if (updates.tags !== undefined) {
+      if (!Array.isArray(updates.tags)) {
+        return res.status(400).json({ error: `tags debe ser un array.` });
+      }
     }
+
+    const task = await Task.findByPk(taskId);
+    if (!task) return res.status(404).json({ error: 'Tarea no encontrada.' });
 
     const allowedFields = ['title', 'description', 'due_date', 'status', 'priority', 'columnId', 'display_order'];
     allowedFields.forEach(field => {
-      if (updates[field] !== undefined) {
-        task[field] = updates[field];
-      }
+      if (updates[field] !== undefined) task[field] = updates[field];
     });
 
     await task.save();
 
-    if (Array.isArray(updates.tagIds)) {
-      await task.setTags(updates.tagIds);
+    if (updates.tags) {
+      await task.setTags(updates.tags);
     }
 
     const updatedTask = await Task.findByPk(taskId, {
@@ -144,12 +143,12 @@ const updateTask = async (req, res) => {
     });
 
     return res.status(200).json(updatedTask);
+
   } catch (error) {
-    console.error('Error al actualizar la tarea:', error);
+    console.error(error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 
 const deleteTask = async (req, res) => {
   try {
@@ -223,6 +222,28 @@ const deleteAttachment = async (req, res) => {
   }
 };
 
+const getTagsByTaskId = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const task = await Task.findByPk(taskId, {
+      include: [{
+        model: Tag,
+        as: 'Tags',
+        attributes: ['id', 'name', 'color'],
+        through: { attributes: [] }
+      }]
+    });
+
+    if (!task) {
+      return res.status(404).json({ error: 'Tarea no encontrada.' });
+    }
+
+    return res.status(200).json(task.Tags);
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 module.exports = {
   createTask,
   getTasksByColumn,
@@ -232,4 +253,5 @@ module.exports = {
   uploadAttachment,
   getAttachmentsByTask,
   deleteAttachment,
+  getTagsByTaskId,
 };

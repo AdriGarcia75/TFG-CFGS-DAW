@@ -99,7 +99,7 @@ const addTagToTask = async (req, res) => {
       return res.status(404).json({ error: 'Tarea o Tag no encontrado.' });
     }
 
-    await task.addTags(tag);
+    await task.addTag(tag);
 
     const updatedTask = await Task.findByPk(taskId, {
       include: [{

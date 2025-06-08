@@ -22,11 +22,12 @@ export default function TaskDetailView({
   setTags,
   allTags = [],
 }) {
-  const toggleTag = (tagId) => {
-    if (tags.includes(tagId)) {
-      setTags(tags.filter(id => id !== tagId));
+  const toggleTag = (tag) => {
+    const isSelected = tags.some(t => t.id === tag.id);
+    if (isSelected) {
+      setTags(tags.filter(t => t.id !== tag.id));
     } else {
-      setTags([...tags, tagId]);
+      setTags([...tags, tag]);
     }
   };
 
@@ -107,32 +108,35 @@ export default function TaskDetailView({
         <label className="font-semibold block mb-1">Etiquetas:</label>
         <div className="mb-2 flex flex-wrap gap-2">
           {tags.length === 0 && <p className="text-gray-500">No hay etiquetas seleccionadas.</p>}
-          {tags.map((tagId) => {
-            const tag = allTags.find(t => t.id === tagId);
-            return tag ? <TagBadge key={tag.id} tag={tag} /> : null;
-          })}
+          {tags.map((tag) => (
+            <TagBadge key={tag.id} tag={tag} />
+          ))}
         </div>
         <div className="max-h-40 overflow-auto border p-2 rounded bg-white">
-          {allTags.map((tag) => (
-            <label
-              key={tag.id}
-              className="inline-flex items-center mr-4 mb-2 cursor-pointer select-none"
-            >
-              <input
-                type="checkbox"
-                checked={tags.some(id => Number(id) === Number(tag.id))}
-                onChange={() => toggleTag(tag.id)}
-                style={{
-                  accentColor: tag.color,
-                  width: '18px',
-                  height: '18px',
-                  cursor: 'pointer',
-                }}
-                className="mr-2"
-              />
-              <TagBadge tag={tag} />
-            </label>
-          ))}
+          {allTags.length === 0 && <p className="text-gray-500">No hay etiquetas disponibles.</p>}
+          {allTags.map((tag) => {
+            const isChecked = tags.some(t => t.id === tag.id);
+            return (
+              <label
+                key={tag.id}
+                className="inline-flex items-center mr-4 mb-2 cursor-pointer select-none"
+              >
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={() => toggleTag(tag)}
+                  style={{
+                    accentColor: tag.color,
+                    width: '18px',
+                    height: '18px',
+                    cursor: 'pointer',
+                  }}
+                  className="mr-2"
+                />
+                <TagBadge tag={tag} />
+              </label>
+            );
+          })}
         </div>
       </div>
 

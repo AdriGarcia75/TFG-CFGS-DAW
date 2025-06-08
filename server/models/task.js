@@ -77,11 +77,11 @@ module.exports = (sequelize, DataTypes) => {
     Task.hasMany(models.Attachment, { foreignKey: 'taskId', as: 'attachments' });
 
     Task.belongsToMany(models.Tag, {
-      through: models.task_tags,
+      through: 'task_tags',
       foreignKey: 'taskId',
       otherKey: 'tagId',
       as: 'Tags',
-      timestamps: false
+      timestamps: false,
     });
   };
 

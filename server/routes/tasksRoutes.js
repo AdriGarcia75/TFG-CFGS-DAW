@@ -12,6 +12,7 @@ const {
   uploadAttachment,
   getAttachmentsByTask,
   deleteAttachment,
+  getTagsByTaskId,
 } = require('../controllers/crudTasks');
 
 router.post('/', createTask);
@@ -24,5 +25,8 @@ router.delete('/attachments/:attachmentId', deleteAttachment);
 
 // this route use the taskAttachments middleware
 router.post('/:taskId/attachments', taskAttachments.single('attachment'), uploadAttachment);
+
+// route for tags
+router.get('/:taskId/tags', getTagsByTaskId);
 
 module.exports = router;
