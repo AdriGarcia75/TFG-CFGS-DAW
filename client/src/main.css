@@ -1,4 +1,3 @@
-/* DESKTOP STYLING */
 .dashboard-container {
   display: flex;
   height: 100vh;
@@ -9,7 +8,6 @@
   width: 16rem;
   flex-shrink: 0;
   overflow-y: auto;
-
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -65,7 +63,6 @@
   box-sizing: border-box;
 }
 
-/* TABLET STYLING */
 @media (min-width: 769px) and (max-width: 1024px) {
   .columns-container {
     flex-wrap: wrap;
@@ -81,7 +78,6 @@
   }
 }
 
-/* MOBILE STYLING */
 @media (max-width: 768px) {
   .dashboard-container {
     flex-direction: column;
@@ -106,12 +102,13 @@
     gap: 12px;
     width: 100%;
     max-width: 400px;
+    margin: 0 auto;
+    align-items: center;
   }
 
   .sidebar nav button {
-    white-space: normal;
-    display: block;
     width: 100%;
+    max-width: 280px;
     text-align: center;
   }
 

@@ -79,25 +79,39 @@ export default function DashboardView({
   return (
     <div className="dashboard-container">
       {/* Sidebar (lateral en desktop, arriba en móvil) */}
-      <aside className="sidebar bg-gray-950 text-white flex flex-col p-4 gap-4 shadow-lg">
+      <aside className="sidebar bg-gray-950 text-white flex flex-col p-2 gap-4 shadow-lg">
         <h2 className="text-2xl font-extrabold mb-4 tracking-tight">AnyTasks</h2>
-        <nav className="flex flex-col gap-2">
+        <nav className="flex flex-col gap-8">
           <SelectBoard
             boards={boards}
             selectedBoard={selectedBoard}
             onBoardChange={onBoardChange}
           />
-          <button onClick={openCreateBoardModal} className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Crear Tablero</button>
-          <button onClick={openCreateColumnModal} className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Crear Columna</button>
-          <button onClick={openCreateTagModal} className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Crear Tag</button>
-          <button className="hover:bg-gray-800 bg-gray-900 p-2 rounded-md transition">Perfil</button>
+          <button
+            onClick={openCreateBoardModal}
+            className="hover:bg-gray-800 bg-gray-900 py-3 px-6 rounded-md transition w-full max-w-xs border border-white"
+          >
+            Crear Tablero
+          </button>
+          <button
+            onClick={openCreateColumnModal}
+            className="hover:bg-gray-800 bg-gray-900 py-3 px-6 rounded-md transition w-full max-w-xs border border-white"
+          >
+            Crear Columna
+          </button>
+          <button
+            onClick={openCreateTagModal}
+            className="hover:bg-gray-800 bg-gray-900 py-3 px-6 rounded-md transition w-full max-w-xs border border-white"
+          >
+            Crear Tag
+          </button>
         </nav>
       </aside>
 
       {/* Main content */}
-      <main className="main-content bg-gradient-to-t sm:bg-gradient-to-l from-gray-900 via-gray-700 to-gray-100 p-6 overflow-auto min-h-screen">
+      <main className="main-content bg-gradient-to-t sm:bg-gradient-to-l from-gray-800 via-gray-700 to-gray-500 p-6 overflow-auto min-h-screen">
         <header className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-black tracking-wide">Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-200 tracking-wide">Dashboard</h1>
           <div className="flex gap-2">
             <DeleteBoardButton
               onClick={handleDeleteBoard}
