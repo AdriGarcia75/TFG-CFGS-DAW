@@ -1,3 +1,5 @@
+import TagBadge from './TagBadge';
+
 export default function TaskCard({ task, onClick, onDelete, onDragStart }) {
   const handleDragStart = (e) => {
     e.dataTransfer.setData('text/plain', task.id); // save the task id
@@ -31,6 +33,15 @@ export default function TaskCard({ task, onClick, onDelete, onDragStart }) {
       <p className="text-sm">
         Prioridad: <span className="font-medium">{task.priority}</span>
       </p>
+
+      {/* render the selected tags */}
+      {task.Tags && task.Tags.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-1">
+          {task.Tags.map(tag => (
+            <TagBadge key={tag.id} tag={tag} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
