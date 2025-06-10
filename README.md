@@ -107,3 +107,25 @@ npx sequelize-cli db:migrate
 npx sequelize-cli db:create
 npx sequelize-cli db:migrate
 ```
+
+### Paso 3 - Configuración de .env para server y client
+Hay que configurar un archivo _.env_ en ambas raices de client y server
+
+**Client**
+Para /client, crear en la raiz del front (es decir, ./client/) un fichero _.env_ con el siguiente formato
+```
+PORT="[Insertar puerto, recomendado el 8080]"
+```
+
+**Server**
+**Client**
+Para /client, crear en la raiz del front (es decir, ./client/) un fichero _.env_ con el siguiente formato
+```
+DB_USER="[Nombre de usuario de la bbdd]"
+DB_PASSWORD="[El password del respectivo usuario de la bbdd]"
+DB_NAME="[El nombre puede ser cualquiera, mientras coincida con la base de datos, se recomienda utilizar anytasks]"
+DB_HOST="[No es obligatorio, pero para localhost (lo recomendado), utilizar 127.0.0.1]"
+DB_DIALECT="mysql"
+
+JWT_SECRET_KEY="[Insertar tu jwt secret key, una frase secreta, se recomienda una string hexadecimal de 64 caracteres]"
+```
