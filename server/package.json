@@ -8,7 +8,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Adrián G.P.",
 	"license": "ISC",
 	"dependencies": {
 		"bcryptjs": "^3.0.2",
